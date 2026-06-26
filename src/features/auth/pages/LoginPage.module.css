@@ -1,0 +1,54 @@
+.page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--background);
+}
+
+.card {
+    width: 100%;
+    max-width: 450px;
+    background: var(--white);
+    padding: 48px 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    text-align: center;
+    color: var(--text-secondary);
+    margin-bottom: 35px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.logo {
+    display: block;
+    width: 180px;
+    margin: 0 auto 20px;
+}
+
+.helpText {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-top: 8px;
+}
+
+.helpLink {
+    color: var(--primary);
+    font-weight: 600;
+    cursor: pointer;
+}
