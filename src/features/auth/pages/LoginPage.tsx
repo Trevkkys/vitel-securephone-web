@@ -3,23 +3,37 @@ import Input from "../../../components/ui/Input/Input";
 import styles from "./LoginPage.module.css";
 import logo from "../../../assets/images/vitel-logo.png";
 import { useState } from "react";
-import { login } from "../services/authService";
+import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
-    const [email, setEmail] = useState("");
+    const navigate = useNavigate();
+
+    const [email, setEmail] = useState("superadmin@vitel.com");
     const [password, setPassword] = useState("");
 
-    const handleSubmit = async (
+    const handleLogin = (
         e: React.FormEvent
     ) => {
         e.preventDefault();
 
-        const response = await login(
-            email,
-            password
+        // Optional: only allow this email
+        if (email !== "superadmin@vitel.com") {
+            alert(
+                "Use superadmin@vitel.com for the demo."
+            );
+            return;
+        }
+
+        localStorage.setItem(
+            "vitel-user",
+            JSON.stringify({
+                email: "superadmin@vitel.com",
+                role: "SUPER_ADMIN",
+                name: "Super Admin",
+            })
         );
 
-        console.log(response);
+        navigate("/dashboard");
     };
 
     return (
@@ -41,9 +55,8 @@ function LoginPage() {
 
                 <form
                     className={styles.form}
-                    onSubmit={handleSubmit}
+                    onSubmit={handleLogin}
                 >
-
                     <Input
                         placeholder="Email"
                         value={email}

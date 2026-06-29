@@ -4,6 +4,9 @@ import RegisterDeviceModal from "../components/RegisterDeviceModal/RegisterDevic
 import DeviceDetailsModal from "../components/DeviceDetailsModal/DeviceDetailsModal";
 import AddNoteModal from "../components/AddNoteModal/AddNoteModal";
 import AddPhotoModal from "../components/AddPhotoModal/AddPhotoModal";
+import AddDocumentModal from "../components/AddDocumentModal/AddDocumentModal";
+import MarkStolenModal from "../components/MarkStolenModal/MarkStolenModal";
+import HistoryModal from "../components/HistoryModal/HistoryModal";
 
 function DevicesPage() {
     const [openModal, setOpenModal] =
@@ -17,6 +20,12 @@ function DevicesPage() {
     const [openNote, setOpenNote] =
         useState(false);
     const [openPhoto, setOpenPhoto] =
+        useState(false);
+    const [openDocument, setOpenDocument] =
+        useState(false);
+    const [openStolen, setOpenStolen] =
+        useState(false);
+    const [openHistory, setOpenHistory] =
         useState(false);
 
     const devices = [
@@ -187,9 +196,30 @@ function DevicesPage() {
                                                 >
                                                     Add Photo
                                                 </p>
-                                                <p>Add Document</p>
-                                                <p>Mark as Stolen</p>
-                                                <p>View History</p>
+                                                <p
+                                                    onClick={() => {
+                                                        setOpenDocument(true);
+                                                        setOpenMenu(null);
+                                                    }}
+                                                >
+                                                    Add Document
+                                                </p>
+                                                <p
+                                                    onClick={() => {
+                                                        setOpenStolen(true);
+                                                        setOpenMenu(null);
+                                                    }}
+                                                >
+                                                    Mark as Stolen
+                                                </p>
+                                                <p
+                                                    onClick={() => {
+                                                        setOpenHistory(true);
+                                                        setOpenMenu(null);
+                                                    }}
+                                                >
+                                                    View History
+                                                </p>
                                             </div>
                                         )}
                                     </div>
@@ -215,6 +245,23 @@ function DevicesPage() {
             <AddPhotoModal
                 open={openPhoto}
                 onClose={() => setOpenPhoto(false)}
+            />
+            <AddDocumentModal
+                open={openDocument}
+                onClose={() =>
+                    setOpenDocument(false)}
+            />
+            <MarkStolenModal
+                open={openStolen}
+                onClose={() =>
+                    setOpenStolen(false)
+                }
+            />
+            <HistoryModal
+                open={openHistory}
+                onClose={() =>
+                    setOpenHistory(false)
+                }
             />
         </>
     );
