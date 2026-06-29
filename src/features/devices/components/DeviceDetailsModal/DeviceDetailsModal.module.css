@@ -1,0 +1,53 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.modal {
+    width: 850px;
+    background: white;
+    border-radius: 18px;
+    padding: 30px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.close {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.3rem;
+}
+
+.infoGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.infoGrid p {
+    margin-top: 6px;
+    color: #6b7280;
+}
+
+.sections {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.card {
+    background: #f8f9fa;
+    border-radius: 14px;
+    padding: 20px;
+}
