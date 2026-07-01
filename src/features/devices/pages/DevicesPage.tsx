@@ -1,30 +1,15 @@
 import styles from "./DevicesPage.module.css";
 import { useState } from "react";
-import RegisterDeviceModal from "../components/RegisterDeviceModal/RegisterDeviceModal";
 import DeviceDetailsModal from "../components/DeviceDetailsModal/DeviceDetailsModal";
-import AddNoteModal from "../components/AddNoteModal/AddNoteModal";
-import AddPhotoModal from "../components/AddPhotoModal/AddPhotoModal";
-import AddDocumentModal from "../components/AddDocumentModal/AddDocumentModal";
-import MarkStolenModal from "../components/MarkStolenModal/MarkStolenModal";
 import HistoryModal from "../components/HistoryModal/HistoryModal";
 
 function DevicesPage() {
-    const [openModal, setOpenModal] =
-        useState(false);
     const [openDetails, setOpenDetails] =
         useState(false);
     const [selectedDevice, setSelectedDevice] =
         useState<any>(null);
     const [openMenu, setOpenMenu] =
         useState<number | null>(null);
-    const [openNote, setOpenNote] =
-        useState(false);
-    const [openPhoto, setOpenPhoto] =
-        useState(false);
-    const [openDocument, setOpenDocument] =
-        useState(false);
-    const [openStolen, setOpenStolen] =
-        useState(false);
     const [openHistory, setOpenHistory] =
         useState(false);
 
@@ -76,20 +61,13 @@ function DevicesPage() {
             <div className={styles.header}>
                 <div>
                     <h1 className={styles.title}>
-                        Manage Devices
+                        Devices Overview
                     </h1>
 
                     <p className={styles.subtitle}>
-                        View, register and manage protected devices.
+                        Monitor all registered devices synced from the SecurePhone mobile application.
                     </p>
                 </div>
-
-                <button
-                    className={styles.addButton}
-                    onClick={() => setOpenModal(true)}
-                >
-                    + Register Device
-                </button>
             </div>
 
             <div className={styles.stats}>
@@ -182,38 +160,6 @@ function DevicesPage() {
                                                 </p>
                                                 <p
                                                     onClick={() => {
-                                                        setOpenNote(true);
-                                                        setOpenMenu(null);
-                                                    }}
-                                                >
-                                                    Add Note
-                                                </p>
-                                                <p
-                                                    onClick={() => {
-                                                        setOpenPhoto(true);
-                                                        setOpenMenu(null);
-                                                    }}
-                                                >
-                                                    Add Photo
-                                                </p>
-                                                <p
-                                                    onClick={() => {
-                                                        setOpenDocument(true);
-                                                        setOpenMenu(null);
-                                                    }}
-                                                >
-                                                    Add Document
-                                                </p>
-                                                <p
-                                                    onClick={() => {
-                                                        setOpenStolen(true);
-                                                        setOpenMenu(null);
-                                                    }}
-                                                >
-                                                    Mark as Stolen
-                                                </p>
-                                                <p
-                                                    onClick={() => {
                                                         setOpenHistory(true);
                                                         setOpenMenu(null);
                                                     }}
@@ -229,33 +175,10 @@ function DevicesPage() {
                     </tbody>
                 </table>
             </div>
-            <RegisterDeviceModal
-                open={openModal}
-                onClose={() => setOpenModal(false)}
-            />
             <DeviceDetailsModal
                 open={openDetails}
                 device={selectedDevice}
                 onClose={() => setOpenDetails(false)}
-            />
-            <AddNoteModal
-                open={openNote}
-                onClose={() => setOpenNote(false)}
-            />
-            <AddPhotoModal
-                open={openPhoto}
-                onClose={() => setOpenPhoto(false)}
-            />
-            <AddDocumentModal
-                open={openDocument}
-                onClose={() =>
-                    setOpenDocument(false)}
-            />
-            <MarkStolenModal
-                open={openStolen}
-                onClose={() =>
-                    setOpenStolen(false)
-                }
             />
             <HistoryModal
                 open={openHistory}

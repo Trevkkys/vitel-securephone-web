@@ -52,3 +52,11 @@
     font-weight: 600;
     cursor: pointer;
 }
+
+.loginButton {
+    width: 100%;
+}
+
+.loginButton button {
+    width: 100%;
+}

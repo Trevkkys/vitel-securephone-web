@@ -32,3 +32,55 @@
     border-left: 4px solid white;
     font-weight: 600;
 }
+
+.group {
+    margin-bottom: 16px;
+}
+
+.groupTitle {
+    padding: 10px 14px;
+    font-size: .8rem;
+    font-weight: 700;
+    color: #8b8b8b;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+}
+
+.groupItems {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-left: 12px;
+}
+
+.group {
+    margin-bottom: 10px;
+}
+
+.groupButton {
+    width: 100%;
+    background: none;
+    border: none;
+    color: inherit;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 12px 16px;
+    font-size: .95rem;
+    font-weight: 600;
+    transition: .2s;
+}
+
+.groupButton:hover {
+    background: rgba(255, 255, 255, .05);
+}
+
+.groupItems {
+    display: flex;
+    flex-direction: column;
+    margin-left: 18px;
+    border-left: 2px solid rgba(255, 255, 255, .08);
+    padding-left: 10px;
+    gap: 2px;
+}

@@ -28,8 +28,9 @@ function LoginPage() {
             "vitel-user",
             JSON.stringify({
                 email: "superadmin@vitel.com",
-                role: "SUPER_ADMIN",
                 name: "Super Admin",
+                organization: "SUPER_ADMIN",
+                role: "ADMIN",
             })
         );
 
@@ -74,9 +75,11 @@ function LoginPage() {
                         }
                     />
 
-                    <Button type="submit">
-                        Login
-                    </Button>
+                    <div className={styles.loginButton}>
+                        <Button type="submit">
+                            Login
+                        </Button>
+                    </div>
 
                     <p className={styles.helpText}>
                         Need help?{" "}
