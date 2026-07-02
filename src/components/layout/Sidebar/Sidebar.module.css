@@ -4,9 +4,26 @@
 }
 
 .logo {
-    font-size: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 36px;
+    line-height: 1;
+}
+
+.vitel {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: white;
+    letter-spacing: .5px;
+}
+
+.secure {
+    font-size: .82rem;
     font-weight: 700;
-    margin-bottom: 40px;
+    color: #8ce6df;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 4px;
 }
 
 .nav {
@@ -83,4 +100,22 @@
     border-left: 2px solid rgba(255, 255, 255, .08);
     padding-left: 10px;
     gap: 2px;
+}
+
+.icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.groupTitle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }

@@ -14,6 +14,7 @@ function ActionMenu({
     items,
 }: ActionMenuProps) {
     const [open, setOpen] = useState(false);
+    const [openUp, setOpenUp] = useState(false);
 
     const menuRef =
         useRef<HTMLDivElement>(null);
@@ -51,15 +52,28 @@ function ActionMenu({
         >
             <button
                 className={styles.button}
-                onClick={() =>
-                    setOpen(!open)
-                }
+                onClick={() => {
+                    if (!open && menuRef.current) {
+                        const rect =
+                            menuRef.current.getBoundingClientRect();
+
+                        const spaceBelow =
+                            window.innerHeight - rect.bottom;
+
+                        setOpenUp(spaceBelow < 220);
+                    }
+
+                    setOpen(!open);
+                }}
             >
                 ⋮
             </button>
 
             {open && (
-                <div className={styles.menu}>
+                <div
+                    className={`${styles.menu} ${openUp ? styles.up : ""
+                        }`}
+                >
                     {items.map((item) => (
                         <button
                             key={item.label}

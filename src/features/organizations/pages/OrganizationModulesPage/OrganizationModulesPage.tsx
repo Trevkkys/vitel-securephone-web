@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import Toggle from "../../../../components/ui/Toggle/Toggle";
 import Button from "../../../../components/ui/Button/Button";
 import OrganizationHeader from "../../../../components/common/OrganizationHeader/OrganizationHeader";
 import styles from "./OrganizationModulesPage.module.css";
@@ -6,7 +8,7 @@ import styles from "./OrganizationModulesPage.module.css";
 function OrganizationModulesPage() {
     const navigate = useNavigate();
 
-    const modules = [
+    const [modules, setModules] = useState([
         {
             name: "Device Tracking",
             description: "Track stolen devices",
@@ -57,7 +59,20 @@ function OrganizationModulesPage() {
             description: "Subscriber self-service portal",
             enabled: false,
         },
-    ];
+    ]);
+
+    const toggleModule = (index: number) => {
+        setModules((prev) =>
+            prev.map((module, i) =>
+                i === index
+                    ? {
+                        ...module,
+                        enabled: !module.enabled,
+                    }
+                    : module
+            )
+        );
+    };
 
     return (
         <>
@@ -76,35 +91,35 @@ function OrganizationModulesPage() {
 
                 <h2>Enabled Platform Modules</h2>
 
-                <table className={styles.table}>
+                <div className={styles.moduleList}>
 
-                    <thead>
-                        <tr>
-                            <th>Module</th>
-                            <th>Description</th>
-                            <th>Enabled</th>
-                        </tr>
-                    </thead>
+                    {modules.map((module, index) => (
 
-                    <tbody>
+                        <div
+                            key={module.name}
+                            className={styles.moduleCard}
+                        >
 
-                        {modules.map((module) => (
-                            <tr key={module.name}>
+                            <div>
 
-                                <td>{module.name}</td>
+                                <h3>{module.name}</h3>
 
-                                <td>{module.description}</td>
+                                <p>{module.description}</p>
 
-                                <td>
-                                    {module.enabled ? "🟢 Enabled" : "⚪ Disabled"}
-                                </td>
+                            </div>
 
-                            </tr>
-                        ))}
+                            <Toggle
+                                checked={module.enabled}
+                                onChange={() =>
+                                    toggleModule(index)
+                                }
+                            />
 
-                    </tbody>
+                        </div>
 
-                </table>
+                    ))}
+
+                </div>
 
                 <div className={styles.actions}>
 

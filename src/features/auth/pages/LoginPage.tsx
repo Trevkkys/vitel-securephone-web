@@ -4,6 +4,8 @@ import styles from "./LoginPage.module.css";
 import logo from "../../../assets/images/vitel-logo.png";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { DEV_PORTAL } from "../../../config/devPortal";
+import { PortalType } from "../../../config/portals";
 
 function LoginPage() {
     const navigate = useNavigate();
@@ -27,9 +29,17 @@ function LoginPage() {
         localStorage.setItem(
             "vitel-user",
             JSON.stringify({
-                email: "superadmin@vitel.com",
-                name: "Super Admin",
-                organization: "SUPER_ADMIN",
+                email,
+                name:
+                    DEV_PORTAL === PortalType.SUPER_ADMIN
+                        ? "Super Administrator"
+                        : DEV_PORTAL === PortalType.POLICE
+                            ? "Police Administrator"
+                            : DEV_PORTAL === PortalType.INSURANCE
+                                ? "Insurance Administrator"
+                                : "Vitel Administrator",
+
+                organization: DEV_PORTAL,
                 role: "ADMIN",
             })
         );

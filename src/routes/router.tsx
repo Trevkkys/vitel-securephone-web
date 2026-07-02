@@ -17,7 +17,6 @@ import OrganizationOverviewPage from "../features/organizations/pages/Organizati
 import OrganizationModulesPage from "../features/organizations/pages/OrganizationModulesPage/OrganizationModulesPage";
 import OrganizationAdministratorPage from "../features/organizations/pages/OrganizationAdministratorPage/OrganizationAdministratorPage";
 import OrganizationActivityPage from "../features/organizations/pages/OrganizationActivityPage/OrganizationActivityPage";
-import UsersPage from "../features/users/pages/UsersPage";
 import ReportsPage from "../features/reports/pages/ReportsPage";
 import SettingsPage from "../features/settings/pages/SettingsPage";
 
@@ -25,6 +24,13 @@ import LiveTrackingPage from "../features/tracking/pages/LiveTrackingPage";
 import GeoFencingPage from "../features/tracking/pages/GeoFencingPage";
 import XTracPage from "../features/tracking/pages/XTracPage";
 import MsisdnTrackingPage from "../features/tracking/pages/MsisdnTrackingPage";
+
+import RecoveriesPage from "../features/recoveries/pages/RecoveriesPage/RecoveriesPage";
+import UsersPage from "../features/users/pages/UsersPage/UsersPage";
+import RolesPage from "../features/roles/pages/RolesPage/RolesPage";
+import CustomersPage from "../features/customers/pages/CustomersPage";
+import MonitoringPage from "../features/monitoring/pages/MonitoringPage";
+import SupportPage from "../features/support/pages/SupportPage";
 
 export const router = createBrowserRouter([
     {
@@ -77,10 +83,6 @@ export const router = createBrowserRouter([
                 element: <OrganizationActivityPage />,
             },
             {
-                path: "users",
-                element: <UsersPage />,
-            },
-            {
                 path: "reports",
                 element: <ReportsPage />,
             },
@@ -111,6 +113,30 @@ export const router = createBrowserRouter([
             {
                 path: "tracking/msisdn",
                 element: <MsisdnTrackingPage />,
+            },
+            {
+                path: "recoveries",
+                element: <RecoveriesPage />,
+            },
+            {
+                path: "users",
+                element: <UsersPage />,
+            },
+            {
+                path: "roles",
+                element: <RolesPage />,
+            },
+            {
+                path: "customers",
+                element: <CustomersPage />,
+            },
+            {
+                path: "monitoring",
+                element: <MonitoringPage />,
+            },
+            {
+                path: "support",
+                element: <SupportPage />,
             },
         ],
     },

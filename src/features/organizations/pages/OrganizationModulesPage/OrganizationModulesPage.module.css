@@ -44,3 +44,39 @@
 .saveButton {
     width: 220px;
 }
+
+.moduleList {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 28px;
+}
+
+.moduleCard {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 22px;
+    border: 1px solid #e7ecef;
+    border-radius: 14px;
+    background: #fff;
+    transition: .25s;
+}
+
+.moduleCard:hover {
+    border-color: #069494;
+    box-shadow: 0 8px 18px rgba(6, 148, 148, .08);
+}
+
+.moduleCard h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #222;
+}
+
+.moduleCard p {
+    margin: 6px 0 0;
+    color: #6b7280;
+    font-size: 14px;
+}

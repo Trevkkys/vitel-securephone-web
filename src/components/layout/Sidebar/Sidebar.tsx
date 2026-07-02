@@ -30,7 +30,13 @@ function Sidebar() {
     return (
         <div className={styles.sidebar}>
             <h2 className={styles.logo}>
-                VITEL
+                <span className={styles.vitel}>
+                    Vitel
+                </span>
+
+                <span className={styles.secure}>
+                    SecurePhone
+                </span>
             </h2>
 
             <nav className={styles.nav}>
@@ -55,7 +61,13 @@ function Sidebar() {
                                     }
                                 >
 
-                                    <span>{item.label}</span>
+                                    <span className={styles.groupTitle}>
+
+                                        {item.icon && <item.icon className={styles.icon} />}
+
+                                        <span>{item.label}</span>
+
+                                    </span>
 
                                     <span>
                                         {openGroups[item.label]
@@ -99,7 +111,13 @@ function Sidebar() {
                             end={item.path === "/dashboard"}
                             className={getNavClass}
                         >
-                            {item.label}
+
+                            {item.icon && (
+                                <item.icon className={styles.icon} />
+                            )}
+
+                            <span>{item.label}</span>
+
                         </NavLink>
 
                     );
