@@ -1,0 +1,89 @@
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+    gap:24px;
+}
+
+.card{
+    background:var(--surface);
+    border-radius:18px;
+    padding:24px;
+    box-shadow:var(--shadow);
+}
+
+.card h2{
+    margin-top:0;
+    color:var(--primary);
+    margin-bottom:20px;
+}
+
+.card label{
+    display:block;
+    margin-top:16px;
+    margin-bottom:8px;
+    font-weight:600;
+    color:var(--text-secondary);
+}
+
+.card select,
+.card input[type="color"]{
+    width:100%;
+    padding:12px;
+    border:1px solid var(--border-strong);
+    background:var(--surface);
+    color:var(--text);
+    border-radius:10px;
+}
+
+.toggleRow{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin:18px 0;
+}
+
+.toggle{
+    width:52px;
+    height:28px;
+    border:none;
+    border-radius:30px;
+    background:var(--toggle-off);
+    cursor:pointer;
+    position:relative;
+    transition:.25s;
+}
+
+.toggle span{
+    position:absolute;
+    top:3px;
+    left:3px;
+    width:22px;
+    height:22px;
+    background:var(--surface);
+    border-radius:50%;
+    transition:.25s;
+}
+
+.active{
+    background:var(--primary);
+}
+
+.active span{
+    transform:translateX(24px);
+}
+
+.fullWidth{
+    grid-column:1/-1;
+}
+
+.systemButtons{
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+}
+
+.footer{
+    margin-top:32px;
+    display:flex;
+    justify-content:flex-end;
+}

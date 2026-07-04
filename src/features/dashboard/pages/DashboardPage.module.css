@@ -12,26 +12,26 @@
 
 .table th {
     text-align: left;
-    background: #f8f9fa;
+    background: var(--surface-muted);
     padding: 14px;
     font-size: 0.9rem;
 }
 
 .table td {
     padding: 14px;
-    border-top: 1px solid #e5e7eb;
+    border-top: 1px solid var(--border);
 }
 
 .table tr:hover {
-    background: #f9fafb;
+    background: var(--surface-soft);
 }
 
 .tableWrapper {
-    background: white;
+    background: var(--surface);
     border-radius: 16px;
     padding: 24px;
     margin-top: 32px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow);
 }
 
 .tableTitle {
@@ -41,8 +41,8 @@
 /* ===== Welcome ===== */
 
 .welcomeCard {
-    background: linear-gradient(135deg, #069494, #047171);
-    color: white;
+    background: linear-gradient(135deg, var(--primary), var(--primary-gradient-end));
+    color: var(--on-primary);
     padding: 28px;
     border-radius: 16px;
     margin-bottom: 28px;
@@ -59,7 +59,7 @@
 }
 
 .roleBadge {
-    background: rgba(255, 255, 255, .18);
+    background: var(--on-primary-overlay);
     padding: 8px 16px;
     border-radius: 20px;
     font-size: .9rem;
@@ -75,10 +75,10 @@
 }
 
 .panel {
-    background: white;
+    background: var(--surface);
     border-radius: 16px;
     padding: 24px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, .05);
+    box-shadow: var(--shadow);
 }
 
 .panelTitle {
@@ -93,7 +93,7 @@
 
 .feed li {
     padding: 14px 0;
-    border-bottom: 1px solid #ececec;
+    border-bottom: 1px solid var(--border-subtle);
 }
 
 .feed li:last-child {
@@ -104,7 +104,7 @@
     display: flex;
     justify-content: space-between;
     padding: 14px 0;
-    border-bottom: 1px solid #ececec;
+    border-bottom: 1px solid var(--border-subtle);
 }
 
 .healthItem:last-child {

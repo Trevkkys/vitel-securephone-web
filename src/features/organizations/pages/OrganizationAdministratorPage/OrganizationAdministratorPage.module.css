@@ -3,11 +3,11 @@
 }
 
 .panel {
-    background: white;
+    background: var(--surface);
     border-radius: 16px;
     padding: 24px;
     margin-bottom: 24px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, .05);
+    box-shadow: var(--shadow);
 }
 
 .panel h2 {
@@ -20,7 +20,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 18px 0;
-    border-bottom: 1px solid #f1f1f1;
+    border-bottom: 1px solid var(--border-muted);
 }
 
 .infoRow:last-child {
@@ -28,11 +28,11 @@
 }
 
 .infoRow span {
-    color: #666;
+    color: var(--text-secondary);
 }
 
 .infoRow strong {
-    color: #222;
+    color: var(--text);
 }
 
 .actions {

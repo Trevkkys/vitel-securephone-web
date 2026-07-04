@@ -1,7 +1,7 @@
 .overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, .35);
+    background: var(--overlay);
 
     display: flex;
     justify-content: center;
@@ -13,10 +13,10 @@
 .modal {
     width: 650px;
     max-width: 92%;
-    background: white;
+    background: var(--surface);
     border-radius: 18px;
     overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, .15);
+    box-shadow: var(--shadow-elevated);
 }
 
 .header {
@@ -26,7 +26,7 @@
 
     padding: 20px 24px;
 
-    border-bottom: 1px solid #ececec;
+    border-bottom: 1px solid var(--border-subtle);
 }
 
 .body {
@@ -46,5 +46,5 @@
     gap: 12px;
     margin-top: 32px;
     padding-top: 20px;
-    border-top: 1px solid #ececec;
+    border-top: 1px solid var(--border-subtle);
 }

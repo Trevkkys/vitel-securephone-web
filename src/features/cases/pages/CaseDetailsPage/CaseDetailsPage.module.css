@@ -6,8 +6,8 @@
 }
 
 .export {
-    background: #069494;
-    color: white;
+    background: var(--primary);
+    color: var(--on-primary);
     border: none;
     padding: 12px 20px;
     border-radius: 8px;
@@ -24,14 +24,14 @@
 .tabs button {
     padding: 10px 18px;
     border: none;
-    background: #ececec;
+    background: var(--border-subtle);
     border-radius: 8px;
     cursor: pointer;
 }
 
 .active {
-    background: #069494 !important;
-    color: white;
+    background: var(--primary) !important;
+    color: var(--on-primary);
 }
 
 .content {
@@ -47,17 +47,17 @@
 }
 
 .card {
-    background: white;
+    background: var(--surface);
     padding: 24px;
     border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, .05);
+    box-shadow: var(--shadow);
 }
 
 .row {
     display: flex;
     justify-content: space-between;
     padding: 12px 0;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--border-muted);
 }
 
 .timeline {

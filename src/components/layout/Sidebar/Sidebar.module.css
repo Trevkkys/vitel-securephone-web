@@ -13,14 +13,14 @@
 .vitel {
     font-size: 1.8rem;
     font-weight: 800;
-    color: white;
+    color: var(--sidebar-text);
     letter-spacing: .5px;
 }
 
 .secure {
     font-size: .82rem;
     font-weight: 700;
-    color: #8ce6df;
+    color: var(--sidebar-text-secondary);
     letter-spacing: 2px;
     text-transform: uppercase;
     margin-top: 4px;
@@ -34,19 +34,19 @@
 
 .item {
     text-decoration: none;
-    color: white;
+    color: var(--sidebar-text);
     padding: 12px 16px;
     border-radius: 10px;
     transition: 0.2s;
 }
 
 .item:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: color-mix(in srgb, var(--sidebar-text) 10%, transparent);
 }
 
 .active {
-    background: rgba(255, 255, 255, 0.18);
-    border-left: 4px solid white;
+    background: color-mix(in srgb, var(--sidebar-text) 18%, transparent);
+    border-left: 4px solid var(--sidebar-text);
     font-weight: 600;
 }
 
@@ -58,7 +58,7 @@
     padding: 10px 14px;
     font-size: .8rem;
     font-weight: 700;
-    color: #8b8b8b;
+    color: var(--sidebar-group-text);
     text-transform: uppercase;
     letter-spacing: .05em;
 }
@@ -90,14 +90,14 @@
 }
 
 .groupButton:hover {
-    background: rgba(255, 255, 255, .05);
+    background: color-mix(in srgb, var(--sidebar-text) 5%, transparent);
 }
 
 .groupItems {
     display: flex;
     flex-direction: column;
     margin-left: 18px;
-    border-left: 2px solid rgba(255, 255, 255, .08);
+    border-left: 2px solid color-mix(in srgb, var(--sidebar-text) 8%, transparent);
     padding-left: 10px;
     gap: 2px;
 }
