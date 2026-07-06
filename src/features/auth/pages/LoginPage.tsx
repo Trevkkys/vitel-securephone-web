@@ -5,10 +5,10 @@ import logo from "../../../assets/images/vitel-logo.png";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DEMO_USERS } from "../../../config/demoUsers";
+import toast from "react-hot-toast";
 
 function LoginPage() {
     const navigate = useNavigate();
-
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
@@ -25,15 +25,13 @@ function LoginPage() {
         const user = DEMO_USERS.find(
             (u) =>
                 u.email.toLowerCase() ===
-                    email.toLowerCase() &&
+                email.toLowerCase() &&
                 u.password === password
         );
 
         if (!user) {
             setLoading(false);
-
-            alert("Invalid email or password.");
-
+            toast.error("Invalid email or password.");
             return;
         }
 
@@ -50,8 +48,11 @@ function LoginPage() {
                 role: "ADMIN",
             })
         );
+        toast.success(`Welcome back, ${user.name}!`);
 
-        navigate("/dashboard");
+        setTimeout(() => {
+            navigate("/dashboard", { replace: true });
+        }, 500);
     };
 
     return (

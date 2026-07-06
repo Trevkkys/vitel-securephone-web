@@ -7,8 +7,17 @@ export interface CurrentUser {
     role: string;
 }
 
-export function getCurrentUser(): CurrentUser {
-    return JSON.parse(
-        localStorage.getItem("vitel-user") || "{}"
-    ) as CurrentUser;
+export function getCurrentUser(): CurrentUser | null {
+    const stored = localStorage.getItem("vitel-user");
+
+    if (!stored) {
+        return null;
+    }
+
+    try {
+        return JSON.parse(stored) as CurrentUser;
+    } catch {
+        localStorage.removeItem("vitel-user");
+        return null;
+    }
 }

@@ -15,21 +15,33 @@ function PoliceDashboard() {
                 <SummaryCard
                     title="Open Cases"
                     value="245"
+                    trend="+8%"
+                    trendType="up"
+                    subtitle="Currently under investigation"
                 />
 
                 <SummaryCard
                     title="Active Tracking"
                     value="83"
+                    trend="+5"
+                    trendType="up"
+                    subtitle="Live tracking sessions"
                 />
 
                 <SummaryCard
                     title="Recovered Devices"
                     value="41"
+                    trend="+11%"
+                    trendType="up"
+                    subtitle="Recovered this month"
                 />
 
                 <SummaryCard
                     title="Recovery Rate"
                     value="87%"
+                    trend="+3%"
+                    trendType="up"
+                    subtitle="Compared to last month"
                 />
 
             </div>

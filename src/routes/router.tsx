@@ -34,6 +34,7 @@ import SupportPage from "../features/support/pages/SupportPage";
 
 import ProtectedRoute from "../components/auth/ProtectedRoute";
 
+
 export const router = createBrowserRouter([
     {
         element: <AuthLayout />,
@@ -44,14 +45,14 @@ export const router = createBrowserRouter([
             },
         ],
     },
-  {
-    path: "/dashboard",
-    element: (
-        <ProtectedRoute>
-            <DashboardLayout />
-        </ProtectedRoute>
-    ),
-    children: [
+    {
+        path: "/dashboard",
+        element: (
+            <ProtectedRoute>
+                <DashboardLayout />
+            </ProtectedRoute>
+        ),
+        children: [
             {
                 index: true,
                 element: <DashboardPage />,

@@ -60,29 +60,41 @@ function AuditLogsPage() {
                 action={<Button>Export CSV</Button>}
             />
 
-           <div className={styles.summary}>
+            <div className={styles.summary}>
 
-    <SummaryCard
-        title="Total Logs"
-        value="18,542"
-    />
+                <SummaryCard
+                    title="Total Logs"
+                    value="18,542"
+                    trend="+14%"
+                    trendType="up"
+                    subtitle="Past 30 days"
+                />
 
-    <SummaryCard
-        title="Today's Activities"
-        value="328"
-    />
+                <SummaryCard
+                    title="Today's Activities"
+                    value="328"
+                    trend="+21"
+                    trendType="up"
+                    subtitle="Compared to yesterday"
+                />
 
-    <SummaryCard
-        title="Failed Actions"
-        value="17"
-    />
+                <SummaryCard
+                    title="Failed Actions"
+                    value="17"
+                    trend="-5"
+                    trendType="down"
+                    subtitle="Security incidents"
+                />
 
-    <SummaryCard
-        title="Active Users"
-        value="231"
-    />
+                <SummaryCard
+                    title="Active Users"
+                    value="231"
+                    trend="+12"
+                    trendType="up"
+                    subtitle="Currently active"
+                />
 
-</div>
+            </div>
 
             <div className={styles.panel}>
 
@@ -147,11 +159,10 @@ function AuditLogsPage() {
                                 <td>
 
                                     <span
-                                        className={`${styles.badge} ${
-                                            log.status === "Success"
+                                        className={`${styles.badge} ${log.status === "Success"
                                                 ? styles.success
                                                 : styles.failed
-                                        }`}
+                                            }`}
                                     >
                                         {log.status}
                                     </span>

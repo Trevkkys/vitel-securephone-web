@@ -15,21 +15,33 @@ function InsuranceDashboard() {
                 <SummaryCard
                     title="Total Claims"
                     value="2,341"
+                    trend="+12%"
+                    trendType="up"
+                    subtitle="Claims received this month"
                 />
 
                 <SummaryCard
                     title="Pending Verification"
                     value="126"
+                    trend="-9"
+                    trendType="down"
+                    subtitle="Awaiting investigation"
                 />
 
                 <SummaryCard
                     title="Approved Claims"
                     value="1,882"
+                    trend="+16%"
+                    trendType="up"
+                    subtitle="Successfully processed"
                 />
 
                 <SummaryCard
                     title="Recovered Devices"
                     value="533"
+                    trend="+21"
+                    trendType="up"
+                    subtitle="Recovered through investigations"
                 />
 
             </div>

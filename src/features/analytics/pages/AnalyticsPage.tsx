@@ -23,10 +23,34 @@ function AnalyticsPage() {
                 "Monitor platform usage across all organizations.",
 
             cards: [
-                { title: "Organizations", value: "12" },
-                { title: "Users", value: "1,284" },
-                { title: "Cases", value: "2,413" },
-                { title: "Growth", value: "+18%" },
+                {
+                    title: "Organizations",
+                    value: "12",
+                    trend: "+2",
+                    trendType: "up",
+                    subtitle: "Active organizations",
+                },
+                {
+                    title: "Users",
+                    value: "1,284",
+                    trend: "+8%",
+                    trendType: "up",
+                    subtitle: "Compared to last month",
+                },
+                {
+                    title: "Cases",
+                    value: "2,413",
+                    trend: "+11%",
+                    trendType: "up",
+                    subtitle: "Platform-wide",
+                },
+                {
+                    title: "Growth",
+                    value: "+18%",
+                    trend: "+4%",
+                    trendType: "up",
+                    subtitle: "Monthly growth",
+                },
             ],
 
             line: [
@@ -60,10 +84,34 @@ function AnalyticsPage() {
                 "Operational performance across investigations.",
 
             cards: [
-                { title: "Cases", value: "245" },
-                { title: "Recoveries", value: "91" },
-                { title: "Tracking", value: "37" },
-                { title: "Recovery Rate", value: "82%" },
+                {
+                    title: "Cases",
+                    value: "245",
+                    trend: "+9%",
+                    trendType: "up",
+                    subtitle: "Opened this month",
+                },
+                {
+                    title: "Recoveries",
+                    value: "91",
+                    trend: "+6%",
+                    trendType: "up",
+                    subtitle: "Successful recoveries",
+                },
+                {
+                    title: "Tracking",
+                    value: "37",
+                    trend: "-3%",
+                    trendType: "down",
+                    subtitle: "Active operations",
+                },
+                {
+                    title: "Recovery Rate",
+                    value: "82%",
+                    trend: "+4%",
+                    trendType: "up",
+                    subtitle: "Compared to last month",
+                },
             ],
 
             line: [
@@ -97,10 +145,34 @@ function AnalyticsPage() {
                 "Claims and verification insights.",
 
             cards: [
-                { title: "Claims", value: "514" },
-                { title: "Approved", value: "437" },
-                { title: "Pending", value: "41" },
-                { title: "Fraud", value: "8" },
+                {
+                    title: "Claims",
+                    value: "514",
+                    trend: "+12%",
+                    trendType: "up",
+                    subtitle: "Submitted this month",
+                },
+                {
+                    title: "Approved",
+                    value: "437",
+                    trend: "+9%",
+                    trendType: "up",
+                    subtitle: "Approved claims",
+                },
+                {
+                    title: "Pending",
+                    value: "41",
+                    trend: "-5%",
+                    trendType: "down",
+                    subtitle: "Awaiting review",
+                },
+                {
+                    title: "Fraud",
+                    value: "8",
+                    trend: "-2",
+                    trendType: "down",
+                    subtitle: "Fraud investigations",
+                },
             ],
 
             line: [
@@ -134,10 +206,34 @@ function AnalyticsPage() {
                 "Customer and platform growth.",
 
             cards: [
-                { title: "Customers", value: "3,426" },
-                { title: "Devices", value: "8,902" },
-                { title: "Premium", value: "2,184" },
-                { title: "Revenue", value: "₦24M" },
+                {
+                    title: "Customers",
+                    value: "3,426",
+                    trend: "+15%",
+                    trendType: "up",
+                    subtitle: "Active subscribers",
+                },
+                {
+                    title: "Devices",
+                    value: "8,902",
+                    trend: "+11%",
+                    trendType: "up",
+                    subtitle: "Protected devices",
+                },
+                {
+                    title: "Premium",
+                    value: "2,184",
+                    trend: "+7%",
+                    trendType: "up",
+                    subtitle: "Premium subscriptions",
+                },
+                {
+                    title: "Revenue",
+                    value: "₦24M",
+                    trend: "+18%",
+                    trendType: "up",
+                    subtitle: "Monthly revenue",
+                },
             ],
 
             line: [
@@ -178,6 +274,9 @@ function AnalyticsPage() {
                         key={card.title}
                         title={card.title}
                         value={card.value}
+                        trend={card.trend}
+                        trendType={card.trendType as "up" | "down"}
+                        subtitle={card.subtitle}
                     />
                 ))}
             </div>

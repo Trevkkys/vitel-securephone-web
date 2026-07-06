@@ -15,21 +15,33 @@ function VitelDashboard() {
                 <SummaryCard
                     title="Active Customers"
                     value="8,426"
+                    trend="+14%"
+                    trendType="up"
+                    subtitle="Customer growth this month"
                 />
 
                 <SummaryCard
                     title="Protected Devices"
                     value="21,583"
+                    trend="+326"
+                    trendType="up"
+                    subtitle="New devices enrolled"
                 />
 
                 <SummaryCard
                     title="Monthly Revenue"
                     value="₦84.6M"
+                    trend="+9%"
+                    trendType="up"
+                    subtitle="Compared to last month"
                 />
 
                 <SummaryCard
                     title="Live Tracking"
                     value="428"
+                    trend="-12"
+                    trendType="down"
+                    subtitle="Currently active sessions"
                 />
 
             </div>

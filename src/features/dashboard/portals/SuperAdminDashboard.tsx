@@ -1,4 +1,4 @@
-import StatCard from "../components/StatCard/StatCard";
+import SummaryCard from "../../../components/common/SummaryCard/SummaryCard";
 import styles from "./SuperAdminDashboard.module.css";
 import { getCurrentUser } from "../../../utils/auth";
 import { PortalType } from "../../../config/portals";
@@ -50,25 +50,39 @@ function SuperAdminDashboard() {
             {/* Statistics */}
 
             <div className={styles.grid}>
-                <StatCard
+
+                <SummaryCard
                     title="Organizations"
                     value="12"
+                    trend="+2"
+                    trendType="up"
+                    subtitle="Active organizations"
                 />
 
-                <StatCard
+                <SummaryCard
                     title="Protected Devices"
                     value="15,432"
+                    trend="+18%"
+                    trendType="up"
+                    subtitle="Across all portals"
                 />
 
-                <StatCard
+                <SummaryCard
                     title="Active Cases"
                     value="1,245"
+                    trend="+7%"
+                    trendType="up"
+                    subtitle="Currently under investigation"
                 />
 
-                <StatCard
+                <SummaryCard
                     title="Pending Claims"
                     value="39"
+                    trend="-4"
+                    trendType="down"
+                    subtitle="Awaiting verification"
                 />
+
             </div>
 
             {/* Operations */}

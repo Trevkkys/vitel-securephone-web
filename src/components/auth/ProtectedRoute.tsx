@@ -6,10 +6,9 @@ interface Props {
 }
 
 function ProtectedRoute({ children }: Props) {
-
     const user = getCurrentUser();
 
-    if (!user.organization) {
+    if (!user) {
         return <Navigate to="/" replace />;
     }
 

@@ -75,21 +75,33 @@ function ReportsPage() {
                 <SummaryCard
                     title="Reports Generated"
                     value="286"
+                    trend="+12%"
+                    trendType="up"
+                    subtitle="vs last week"
                 />
 
                 <SummaryCard
                     title="Scheduled Reports"
                     value="12"
+                    trend="+2"
+                    trendType="up"
+                    subtitle="Active schedules"
                 />
 
                 <SummaryCard
                     title="Exports Today"
                     value="41"
+                    trend="+8"
+                    trendType="up"
+                    subtitle="Generated today"
                 />
 
                 <SummaryCard
                     title="Success Rate"
                     value="99%"
+                    trend="1%"
+                    trendType="up"
+                    subtitle="Successful exports"
                 />
 
             </div>
