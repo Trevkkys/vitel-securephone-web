@@ -15,20 +15,20 @@
     flex: 1;
     padding: 12px;
     border-radius: 8px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-strong);
 }
 
 .select {
     padding: 12px;
     border-radius: 8px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-strong);
 }
 
 .tableWrapper {
-    background: white;
+    background: var(--surface);
     border-radius: 16px;
     padding: 24px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, .05);
+    box-shadow: var(--shadow);
 }
 
 .table {
@@ -38,23 +38,23 @@
 
 .table th {
     text-align: left;
-    background: #f8f9fa;
+    background: var(--surface-muted);
     padding: 14px;
 }
 
 .table td {
     padding: 14px;
-    border-top: 1px solid #eee;
+    border-top: 1px solid var(--border-muted);
 }
 
 .table tr:hover {
-    background: #fafafa;
+    background: var(--surface-tertiary);
 }
 
 .viewButton {
     border: none;
-    background: #069494;
-    color: white;
+    background: var(--primary);
+    color: var(--on-primary);
     padding: 8px 18px;
     border-radius: 999px;
     cursor: pointer;

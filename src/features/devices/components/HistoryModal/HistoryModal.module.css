@@ -1,7 +1,7 @@
 .overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, .45);
+    background: var(--overlay-strong);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -9,7 +9,7 @@
 
 .modal {
     width: 600px;
-    background: white;
+    background: var(--surface);
     padding: 30px;
     border-radius: 18px;
 }
@@ -25,7 +25,7 @@
 }
 
 .timeline p {
-    color: #6b7280;
+    color: var(--text-secondary);
     margin-top: 6px;
 }
 

@@ -6,7 +6,7 @@
 .sidebar {
     width: 260px;
     background: var(--sidebar);
-    color: white;
+    color: var(--sidebar-text);
 }
 
 .main {
@@ -17,12 +17,12 @@
 
 .header {
     height: 72px;
-    background: var(--white);
+    background: var(--surface);
     border-bottom: 1px solid var(--border);
 }
 
 .content {
     flex: 1;
     padding: 24px;
-    background: var(--background);
+    background: var(--bg);
 }

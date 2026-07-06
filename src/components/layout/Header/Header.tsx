@@ -1,24 +1,10 @@
 import styles from "./Header.module.css";
-import { DEV_PORTAL } from "../../../config/devPortal";
-import { PortalType } from "../../../config/portals";
 import { FiBell } from "react-icons/fi";
+import { getCurrentUser } from "../../../utils/currentUser";
 
 function Header() {
-    const portal = DEV_PORTAL;
 
-    const welcomeText = {
-        [PortalType.SUPER_ADMIN]:
-            "Super Administrator",
-
-        [PortalType.POLICE]:
-            "Police Administrator",
-
-        [PortalType.INSURANCE]:
-            "Insurance Administrator",
-
-        [PortalType.VITEL]:
-            "Vitel Administrator",
-    };
+    const user = getCurrentUser();
 
     return (
         <header className={styles.header}>
@@ -30,7 +16,7 @@ function Header() {
                 </h3>
 
                 <p className={styles.subtitle}>
-                    {welcomeText[portal]}
+                    {user.name}
                 </p>
 
             </div>

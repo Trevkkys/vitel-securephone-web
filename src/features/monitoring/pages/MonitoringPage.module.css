@@ -13,10 +13,10 @@
 }
 
 .panel {
-    background: #fff;
+    background: var(--surface);
     border-radius: 12px;
     padding: 24px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
+    box-shadow: var(--shadow-sm);
 }
 
 .panel h2 {
@@ -30,10 +30,10 @@
 }
 
 .tablePanel {
-    background: #fff;
+    background: var(--surface);
     border-radius: 12px;
     padding: 24px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
+    box-shadow: var(--shadow-sm);
 }
 
 .table {
@@ -45,12 +45,12 @@
 .table th {
     text-align: left;
     padding: 14px 16px;
-    background: #f7f9fb;
+    background: var(--surface-secondary);
 }
 
 .table td {
     padding: 16px;
-    border-top: 1px solid #edf1f5;
+    border-top: 1px solid var(--border-faint);
 }
 
 .online,
@@ -63,11 +63,11 @@
 }
 
 .online {
-    background: #dcfce7;
-    color: #15803d;
+    background: var(--success-bg);
+    color: var(--success-text);
 }
 
 .warning {
-    background: #fef3c7;
-    color: #b45309;
+    background: var(--warning-bg);
+    color: var(--warning-text);
 }

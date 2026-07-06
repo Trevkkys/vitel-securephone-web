@@ -13,10 +13,10 @@
 }
 
 .panel {
-    background: var(--white);
+    background: var(--surface);
     border-radius: 12px;
     padding: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
+    box-shadow: var(--shadow-sm);
 }
 
 .panel h2 {
@@ -33,7 +33,7 @@
 
 .panel li {
     padding: 12px 0;
-    border-bottom: 1px solid #ececec;
+    border-bottom: 1px solid var(--border-subtle);
 }
 
 .panel li:last-child {
@@ -46,7 +46,7 @@
 }
 
 .table th {
-    background: #f5f7fa;
+    background: var(--bg);
     text-align: left;
     padding: 12px;
     font-weight: 600;
@@ -54,7 +54,7 @@
 
 .table td {
     padding: 12px;
-    border-top: 1px solid #ececec;
+    border-top: 1px solid var(--border-subtle);
 }
 
 @media (max-width: 900px) {
