@@ -13,14 +13,37 @@ function OrganizationOverviewPage() {
         "1": {
             name: "Nigeria Police Force",
             subtitle: "Police Organization Portal",
+            portal: "police.vitelsecurephone.com",
+            type: "Police",
+            admin: "John Ibrahim",
+            email: "admin@police.gov.ng",
+            status: "Active",
+            created: "12 Jan 2026",
+            lastActivity: "15 Minutes Ago",
         },
+
         "2": {
             name: "Leadway Insurance",
             subtitle: "Insurance Organization Portal",
+            portal: "insurance.vitelsecurephone.com",
+            type: "Insurance",
+            admin: "Linda Okoye",
+            email: "admin@leadway.ng",
+            status: "Active",
+            created: "20 Jan 2026",
+            lastActivity: "8 Minutes Ago",
         },
+
         "3": {
             name: "Vitel SecurePhone Operations",
             subtitle: "Internal Operations Portal",
+            portal: "vitel.vitelsecurephone.com",
+            type: "Internal",
+            admin: "Martin Mek",
+            email: "admin@vitel.com",
+            status: "Active",
+            created: "01 Jan 2026",
+            lastActivity: "2 Minutes Ago",
         },
     };
 
@@ -74,22 +97,44 @@ function OrganizationOverviewPage() {
 
                     <div className={styles.infoRow}>
                         <span>Portal</span>
-                        <strong>police.vitelsecurephone.com</strong>
+                        <strong>{organization.portal}</strong>
                     </div>
 
                     <div className={styles.infoRow}>
                         <span>Organization Type</span>
-                        <strong>Police</strong>
+                        <strong>{organization.type}</strong>
                     </div>
 
                     <div className={styles.infoRow}>
                         <span>Status</span>
-                        <strong>Active</strong>
+                        <strong className={styles.activeStatus}>
+                            🟢 {organization.status}
+                        </strong>
                     </div>
 
                     <div className={styles.infoRow}>
                         <span>Administrator</span>
-                        <strong>John Ibrahim</strong>
+                        <strong>{organization.admin}</strong>
+                    </div>
+
+                    <div className={styles.infoRow}>
+                        <span>Email</span>
+                        <strong>{organization.email}</strong>
+                    </div>
+
+                    <div className={styles.infoRow}>
+                        <span>Created</span>
+                        <strong>{organization.created}</strong>
+                    </div>
+
+                    <div className={styles.infoRow}>
+                        <span>Last Activity</span>
+                        <strong>{organization.lastActivity}</strong>
+                    </div>
+
+                    <div className={styles.infoRow}>
+                        <span>License</span>
+                        <strong>Enterprise</strong>
                     </div>
 
                 </div>
@@ -131,6 +176,14 @@ function OrganizationOverviewPage() {
                         >
                             📄 Export Organization
                         </Button>
+
+                        <Button
+                            onClick={() =>
+                                alert("View Audit History")
+                            }
+                        >
+                            📜 Audit History
+                        </Button>
                     </div>
 
                 </div>
@@ -162,15 +215,19 @@ function OrganizationOverviewPage() {
 
                 <ul className={styles.activity}>
 
-                    <li>Administrator updated Inspector role</li>
+                    <li>New Tracking Officer added</li>
 
-                    <li>New officer account created</li>
+                    <li>Administrator password changed</li>
 
-                    <li>Tracking module enabled</li>
+                    <li>Geo-Fencing module enabled</li>
 
-                    <li>Case SP-1002 assigned</li>
+                    <li>Organization settings updated</li>
 
-                    <li>User password reset</li>
+                    <li>Monthly report generated</li>
+
+                    <li>Recovery completed successfully</li>
+
+                    <li>User account suspended</li>
 
                 </ul>
 

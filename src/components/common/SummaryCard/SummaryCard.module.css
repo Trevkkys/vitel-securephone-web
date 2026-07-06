@@ -3,6 +3,12 @@
     padding: 24px;
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, .05);
+    transition: .25s;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .08);
 }
 
 .card h3 {
@@ -12,10 +18,39 @@
     font-weight: 600;
 }
 
-.card span {
+.value {
     display: block;
     margin-top: 12px;
     font-size: 2rem;
     font-weight: 700;
     color: #069494;
+}
+
+.footer {
+    margin-top: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.trend {
+    font-size: .82rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 30px;
+}
+
+.up {
+    color: #0b8f52;
+    background: #e9f9f1;
+}
+
+.down {
+    color: #d23d3d;
+    background: #fdecec;
+}
+
+.subtitle {
+    color: #888;
+    font-size: .75rem;
 }

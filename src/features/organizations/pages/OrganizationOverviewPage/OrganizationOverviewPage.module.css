@@ -56,3 +56,8 @@
 .activity li {
     margin-bottom: 14px;
 }
+
+.activeStatus {
+    color: #069494;
+    font-weight: 700;
+}
