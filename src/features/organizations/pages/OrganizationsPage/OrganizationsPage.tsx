@@ -1,5 +1,5 @@
 import styles from "./OrganizationsPage.module.css";
-
+import { organizations } from "../../../../config/organizations";
 import ActionMenu from "../../../../components/ui/ActionMenu/ActionMenu";
 import PageHeader from "../../../../components/common/PageHeader/PageHeader";
 import Button from "../../../../components/ui/Button/Button";
@@ -10,33 +10,6 @@ import { useNavigate } from "react-router-dom";
 function OrganizationsPage() {
 
     const navigate = useNavigate();
-
-    const organizations = [
-        {
-            id: 1,
-            name: "Nigeria Police Force",
-            type: "Police",
-            users: 154,
-            portal: "police.vitelsecurephone.com",
-            status: "Active",
-        },
-        {
-            id: 2,
-            name: "Leadway Insurance",
-            type: "Insurance",
-            users: 67,
-            portal: "insurance.vitelsecurephone.com",
-            status: "Active",
-        },
-        {
-            id: 3,
-            name: "Vitel SecurePhone Operations",
-            type: "Internal",
-            users: 28,
-            portal: "staff.vitelsecurephone.com",
-            status: "Active",
-        },
-    ];
 
     return (
         <>

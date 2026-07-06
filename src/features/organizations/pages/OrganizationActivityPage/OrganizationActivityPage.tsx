@@ -1,11 +1,20 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../../../components/ui/Button/Button";
 import OrganizationHeader from "../../../../components/common/OrganizationHeader/OrganizationHeader";
 import styles from "./OrganizationActivityPage.module.css";
+import { getOrganization } from "../../../../utils/getOrganization";
 
 function OrganizationActivityPage() {
 
     const navigate = useNavigate();
+
+    const { organizationId } = useParams();
+
+const organization = getOrganization(organizationId!);
+
+if (!organization) {
+    return <h2>Organization not found.</h2>;
+}
 
     const activities = [
 
@@ -39,9 +48,9 @@ function OrganizationActivityPage() {
             <div className={styles.spacing} />
 
             <OrganizationHeader
-                title="Nigeria Police Force"
-                subtitle="Police Organization Portal"
-            />
+    title={organization.name}
+    subtitle={`${organization.type} Organization Portal`}
+/>
 
             {activities.map((group) => (
 

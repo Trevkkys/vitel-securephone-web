@@ -1,56 +1,20 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SummaryCard from "../../../../components/common/SummaryCard/SummaryCard";
 import Button from "../../../../components/ui/Button/Button";
-import styles from "./OrganizationOverviewPage.module.css";
-import { useParams } from "react-router-dom";
 import OrganizationHeader from "../../../../components/common/OrganizationHeader/OrganizationHeader";
+import styles from "./OrganizationOverviewPage.module.css";
+
+import { getOrganization } from "../../../../utils/getOrganization";
 
 function OrganizationOverviewPage() {
     const navigate = useNavigate();
     const { organizationId } = useParams();
 
-    const organizationData = {
-        "1": {
-            name: "Nigeria Police Force",
-            subtitle: "Police Organization Portal",
-            portal: "police.vitelsecurephone.com",
-            type: "Police",
-            admin: "John Ibrahim",
-            email: "admin@police.gov.ng",
-            status: "Active",
-            created: "12 Jan 2026",
-            lastActivity: "15 Minutes Ago",
-        },
+const organization = getOrganization(organizationId!);
 
-        "2": {
-            name: "Leadway Insurance",
-            subtitle: "Insurance Organization Portal",
-            portal: "insurance.vitelsecurephone.com",
-            type: "Insurance",
-            admin: "Linda Okoye",
-            email: "admin@leadway.ng",
-            status: "Active",
-            created: "20 Jan 2026",
-            lastActivity: "8 Minutes Ago",
-        },
-
-        "3": {
-            name: "Vitel SecurePhone Operations",
-            subtitle: "Internal Operations Portal",
-            portal: "vitel.vitelsecurephone.com",
-            type: "Internal",
-            admin: "Martin Mek",
-            email: "admin@vitel.com",
-            status: "Active",
-            created: "01 Jan 2026",
-            lastActivity: "2 Minutes Ago",
-        },
-    };
-
-    const organization =
-        organizationData[
-        organizationId as keyof typeof organizationData
-        ];
+if (!organization) {
+    return <h2>Organization not found.</h2>;
+}
 
     return (
         <>
@@ -61,9 +25,9 @@ function OrganizationOverviewPage() {
             <div className={styles.spacing} />
 
             <OrganizationHeader
-                title={organization.name}
-                subtitle={organization.subtitle}
-            />
+    title={organization.name}
+    subtitle={`${organization.type} Organization Portal`}
+/>
 
             <div className={styles.summary}>
 
@@ -114,22 +78,23 @@ function OrganizationOverviewPage() {
 
                     <div className={styles.infoRow}>
                         <span>Administrator</span>
-                        <strong>{organization.admin}</strong>
+                        <strong>Assigned Administrator</strong>
                     </div>
 
                     <div className={styles.infoRow}>
-                        <span>Email</span>
-                        <strong>{organization.email}</strong>
+                        <span>Email</span>                       
+                        <strong>organization@vitel.com</strong>
+
                     </div>
 
                     <div className={styles.infoRow}>
                         <span>Created</span>
-                        <strong>{organization.created}</strong>
+                        <strong>—</strong>
                     </div>
 
                     <div className={styles.infoRow}>
                         <span>Last Activity</span>
-                        <strong>{organization.lastActivity}</strong>
+                       <strong>Just now</strong>
                     </div>
 
                     <div className={styles.infoRow}>
@@ -147,7 +112,7 @@ function OrganizationOverviewPage() {
 
                         <Button
                             onClick={() =>
-                                navigate("/dashboard/organizations/1/modules")
+                               navigate(`/dashboard/organizations/${organization.id}/modules`)
                             }
                         >
                             ⚙ Configure Modules
@@ -155,7 +120,7 @@ function OrganizationOverviewPage() {
 
                         <Button
                             onClick={() =>
-                                navigate("/dashboard/organizations/1/administrator")
+                                navigate(`/dashboard/organizations/${organization.id}/administrator`)
                             }
                         >
                             👤 Change Administrator
@@ -195,17 +160,10 @@ function OrganizationOverviewPage() {
                 <h2>Enabled Modules</h2>
 
                 <div className={styles.modules}>
-
-                    <div>✅ Cases</div>
-                    <div>✅ Device Tracking</div>
-                    <div>✅ Geo Tracking</div>
-                    <div>✅ X-TRAC</div>
-                    <div>✅ IMEI Lookup</div>
-                    <div>✅ MSISDN Lookup</div>
-                    <div>✅ Analytics</div>
-                    <div>❌ Insurance</div>
-
-                </div>
+    {organization.enabledModules.map((module) => (
+        <div key={module}>✅ {module}</div>
+    ))}
+</div>
 
             </div>
 

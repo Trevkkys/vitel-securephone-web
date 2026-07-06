@@ -1,10 +1,18 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../../../components/ui/Button/Button";
 import OrganizationHeader from "../../../../components/common/OrganizationHeader/OrganizationHeader";
 import styles from "./OrganizationAdministratorPage.module.css";
+import { getOrganization } from "../../../../utils/getOrganization";
 
 function OrganizationAdministratorPage() {
     const navigate = useNavigate();
+    const { organizationId } = useParams();
+
+const organization = getOrganization(organizationId!);
+
+if (!organization) {
+    return <h2>Organization not found.</h2>;
+}
 
     return (
         <>
@@ -15,39 +23,38 @@ function OrganizationAdministratorPage() {
             <div className={styles.spacing} />
 
             <OrganizationHeader
-                title="Nigeria Police Force"
-                subtitle="Police Organization Portal"
-            />
+    title={organization.name}
+    subtitle={`${organization.type} Organization Portal`}
+/>
 
             <div className={styles.panel}>
 
                 <h2>Organization Administrator</h2>
 
                 <div className={styles.infoRow}>
-                    <span>Full Name</span>
-                    <strong>John Ibrahim</strong>
-                </div>
+    <span>Full Name</span>
+    <strong>Assigned Administrator</strong>
+</div>
 
-                <div className={styles.infoRow}>
-                    <span>Email</span>
-                    <strong>john.ibrahim@police.gov.ng</strong>
-                </div>
+<div className={styles.infoRow}>
+    <span>Email</span>
+    <strong>administrator@vitel.com</strong>
+</div>
 
-                <div className={styles.infoRow}>
-                    <span>Phone Number</span>
-                    <strong>+234 801 234 5678</strong>
-                </div>
+<div className={styles.infoRow}>
+    <span>Phone Number</span>
+    <strong>+234 XXX XXX XXXX</strong>
+</div>
 
-                <div className={styles.infoRow}>
-                    <span>Last Login</span>
-                    <strong>Today • 09:24 AM</strong>
-                </div>
+<div className={styles.infoRow}>
+    <span>Last Login</span>
+    <strong>Recently</strong>
+</div>
 
-                <div className={styles.infoRow}>
-                    <span>Status</span>
-                    <strong>Active</strong>
-                </div>
-
+<div className={styles.infoRow}>
+    <span>Status</span>
+    <strong>{organization.status}</strong>
+</div>
             </div>
 
             <div className={styles.panel}>
