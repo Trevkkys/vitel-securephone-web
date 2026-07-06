@@ -1,7 +1,7 @@
 .overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, .45);
+    background: var(--overlay-strong);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -10,7 +10,7 @@
 
 .modal {
     width: 850px;
-    background: white;
+    background: var(--surface);
     border-radius: 18px;
     padding: 30px;
 }
@@ -36,7 +36,7 @@
 
 .infoGrid p {
     margin-top: 6px;
-    color: #6b7280;
+    color: var(--text-secondary);
 }
 
 .sections {
@@ -47,7 +47,7 @@
 }
 
 .card {
-    background: #f8f9fa;
+    background: var(--surface-muted);
     border-radius: 14px;
     padding: 20px;
 }

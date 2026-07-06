@@ -16,22 +16,26 @@
     flex: 1;
     min-width: 260px;
     padding: 12px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--text);
     border-radius: 8px;
 }
 
 .select {
     padding: 12px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--text);
     border-radius: 8px;
     min-width: 180px;
 }
 
 .tableWrapper {
-    background: #fff;
+    background: var(--surface);
     border-radius: 12px;
     overflow-x: auto;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
+    box-shadow: var(--shadow-sm);
 }
 
 .table {
@@ -40,23 +44,23 @@
 }
 
 .table thead {
-    background: #f7f9fb;
+    background: var(--surface-secondary);
 }
 
 .table th {
     text-align: left;
     padding: 16px 20px;
     font-size: .9rem;
-    color: #555;
+    color: var(--text-secondary);
 }
 
 .table td {
     padding: 16px 20px;
-    border-top: 1px solid #eef1f4;
+    border-top: 1px solid var(--border-soft);
 }
 
 .table tbody tr:hover {
-    background: #fafcfd;
+    background: var(--surface-hover);
 }
 
 .active,
@@ -71,11 +75,11 @@
 }
 
 .active {
-    background: #dcfce7;
-    color: #15803d;
+    background: var(--success-bg);
+    color: var(--success-text);
 }
 
 .inactive {
-    background: #fee2e2;
-    color: #b91c1c;
+    background: var(--danger-bg);
+    color: var(--danger-text);
 }

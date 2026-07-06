@@ -9,11 +9,11 @@
 }
 
 .on {
-    background: #069494;
+    background: var(--primary);
 }
 
 .off {
-    background: #d1d5db;
+    background: var(--toggle-off);
 }
 
 .knob {
@@ -22,7 +22,7 @@
     left: 3px;
     width: 22px;
     height: 22px;
-    background: white;
+    background: var(--surface);
     border-radius: 50%;
     transition: .25s ease;
 }

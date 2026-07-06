@@ -10,7 +10,7 @@
 }
 
 .header p {
-    color: #777;
+    color: var(--text-muted);
     margin-top: 8px;
 }
 
@@ -18,22 +18,22 @@
     display: flex;
     gap: 28px;
     margin-bottom: 30px;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid var(--border);
     padding-bottom: 14px;
 }
 
 .tabs a {
     text-decoration: none;
-    color: #666;
+    color: var(--text-secondary);
     font-weight: 600;
 }
 
 .tabs a:hover {
-    color: #069494;
+    color: var(--primary);
 }
 
 .active {
-    color: #069494 !important;
-    border-bottom: 3px solid #069494;
+    color: var(--primary) !important;
+    border-bottom: 3px solid var(--primary);
     padding-bottom: 12px;
 }

@@ -1,19 +1,9 @@
 :root {
-    --primary: #069494;
-    --primary-dark: #045e5e;
+    --primary-dark: var(--primary-hover);
 
-    --background: #f5f7fa;
-    --white: #ffffff;
+    --background: var(--bg);
+    --white: var(--surface);
 
-    --sidebar: #0f172a;
-    --sidebar-hover: #1e293b;
-
-    --text-primary: #111827;
-    --text-secondary: #6b7280;
-
-    --success: #16a34a;
-    --danger: #dc2626;
-    --warning: #f59e0b;
-
-    --border: #e5e7eb;
+    --text-primary: var(--text);
+    --text-light: var(--text-secondary);
 }

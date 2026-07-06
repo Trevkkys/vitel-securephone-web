@@ -4,42 +4,49 @@ import styles from "./LoginPage.module.css";
 import logo from "../../../assets/images/vitel-logo.png";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { DEV_PORTAL } from "../../../config/devPortal";
-import { PortalType } from "../../../config/portals";
+import { DEMO_USERS } from "../../../config/demoUsers";
 
 function LoginPage() {
     const navigate = useNavigate();
 
-    const [email, setEmail] = useState("superadmin@vitel.com");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
 
-    const handleLogin = (
+    const handleLogin = async (
         e: React.FormEvent
     ) => {
         e.preventDefault();
 
-        // Optional: only allow this email
-        if (email !== "superadmin@vitel.com") {
-            alert(
-                "Use superadmin@vitel.com for the demo."
-            );
+        if (loading) return;
+
+        setLoading(true);
+
+        const user = DEMO_USERS.find(
+            (u) =>
+                u.email.toLowerCase() ===
+                    email.toLowerCase() &&
+                u.password === password
+        );
+
+        if (!user) {
+            setLoading(false);
+
+            alert("Invalid email or password.");
+
             return;
         }
+
+        await new Promise((resolve) =>
+            setTimeout(resolve, 900)
+        );
 
         localStorage.setItem(
             "vitel-user",
             JSON.stringify({
-                email,
-                name:
-                    DEV_PORTAL === PortalType.SUPER_ADMIN
-                        ? "Super Administrator"
-                        : DEV_PORTAL === PortalType.POLICE
-                            ? "Police Administrator"
-                            : DEV_PORTAL === PortalType.INSURANCE
-                                ? "Insurance Administrator"
-                                : "Vitel Administrator",
-
-                organization: DEV_PORTAL,
+                email: user.email,
+                name: user.name,
+                organization: user.portal,
                 role: "ADMIN",
             })
         );
@@ -57,7 +64,7 @@ function LoginPage() {
                 />
 
                 <h1 className={styles.title}>
-                    Vitel SecurePhone📱
+                    Vitel SecurePhone 📱
                 </h1>
 
                 <p className={styles.subtitle}>
@@ -87,7 +94,9 @@ function LoginPage() {
 
                     <div className={styles.loginButton}>
                         <Button type="submit">
-                            Login
+                            {loading
+                                ? "Signing in..."
+                                : "Login"}
                         </Button>
                     </div>
 

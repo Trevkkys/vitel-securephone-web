@@ -19,21 +19,25 @@
 .search {
     flex: 1;
     padding: 12px 16px;
-    border: 1px solid #dcdfe4;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--text);
     border-radius: 10px;
 }
 
 .filter {
     padding: 12px 16px;
-    border: 1px solid #dcdfe4;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--text);
     border-radius: 10px;
 }
 
 .tableCard {
-    background: white;
+    background: var(--surface);
     border-radius: 16px;
     padding: 24px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow);
 }
 
 .table {
@@ -44,12 +48,12 @@
 .table th {
     text-align: left;
     padding: 16px;
-    background: #f8f9fa;
+    background: var(--surface-muted);
 }
 
 .table td {
     padding: 16px;
-    border-top: 1px solid #ececec;
+    border-top: 1px solid var(--border-subtle);
 }
 
 .menu {
@@ -58,13 +62,13 @@
 }
 
 .subtitle {
-    color: #6b7280;
+    color: var(--text-secondary);
     margin-top: 6px;
 }
 
 .addButton {
     background: var(--primary);
-    color: white;
+    color: var(--on-primary);
     border: none;
     padding: 14px 20px;
     border-radius: 10px;
@@ -79,11 +83,11 @@
 }
 
 .badge {
-    background: white;
+    background: var(--surface);
     border-radius: 14px;
     padding: 20px;
     min-width: 180px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow);
 }
 
 .badge span {
@@ -94,7 +98,7 @@
 
 .badge p {
     margin-top: 8px;
-    color: #6b7280;
+    color: var(--text-secondary);
 }
 
 .menuContainer {
@@ -111,10 +115,10 @@
     position: absolute;
     right: 0;
     top: 30px;
-    background: white;
+    background: var(--surface);
     width: 180px;
     border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, .15);
+    box-shadow: var(--shadow-elevated);
     z-index: 100;
 }
 
@@ -125,5 +129,5 @@
 }
 
 .dropdown p:hover {
-    background: #f5f5f5;
+    background: var(--surface-raised-hover);
 }

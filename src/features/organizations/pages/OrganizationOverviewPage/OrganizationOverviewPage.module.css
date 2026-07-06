@@ -17,10 +17,10 @@
 }
 
 .panel {
-    background: white;
+    background: var(--surface);
     border-radius: 16px;
     padding: 24px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, .05);
+    box-shadow: var(--shadow);
     margin-bottom: 24px;
 }
 
@@ -33,7 +33,7 @@
     display: flex;
     justify-content: space-between;
     padding: 14px 0;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--border-muted);
 }
 
 .actions {
