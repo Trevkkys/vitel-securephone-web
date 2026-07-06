@@ -1,4 +1,5 @@
 import { PortalType } from "../../../config/portals";
+import { getCurrentUser } from "../../../utils/currentUser";
 
 import SuperAdminDashboard from "../portals/SuperAdminDashboard";
 import PoliceDashboard from "../portals/PoliceDashboard";
@@ -7,11 +8,12 @@ import VitelDashboard from "../portals/VitelDashboard";
 
 function DashboardPage() {
 
-    const user = JSON.parse(
-        localStorage.getItem("vitel-user") || "{}"
-    );
+    const user = getCurrentUser();
 
-    switch (user.organization) {
+    const portal =
+        user?.organization ?? PortalType.POLICE;
+
+    switch (portal) {
 
         case PortalType.POLICE:
             return <PoliceDashboard />;

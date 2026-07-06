@@ -10,7 +10,9 @@ function CasesPage() {
 
     const user = getCurrentUser();
 
-    switch (user.organization) {
+   const portal = user?.organization ?? PortalType.POLICE;
+
+switch (portal) {
 
         case PortalType.POLICE:
             return <PoliceCases />;

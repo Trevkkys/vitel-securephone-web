@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FiChevronRight, FiChevronDown } from "react-icons/fi";
+import { PortalType } from "../../../config/portals";
 
 import styles from "./Sidebar.module.css";
 import { navigation } from "../../../config/navigation";
@@ -33,7 +34,9 @@ const handleLogout = () => {
     navigate("/");
 };
 
-const menu = navigation[user.organization];
+const portal = user?.organization ?? PortalType.POLICE;
+
+const menu = navigation[portal];
 
     const [openGroups, setOpenGroups] = useState<
         Record<string, boolean>
