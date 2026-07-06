@@ -1,9 +1,13 @@
-import styles from "./Sidebar.module.css";
-import { NavLink } from "react-router-dom";
 import { useState } from "react";
-import { navigation } from "../../../config/navigation";
-import { DEV_PORTAL } from "../../../config/devPortal";
+import { NavLink, useNavigate } from "react-router-dom";
 import { FiChevronRight, FiChevronDown } from "react-icons/fi";
+
+import styles from "./Sidebar.module.css";
+import { navigation } from "../../../config/navigation";
+import { getCurrentUser } from "../../../utils/currentUser";
+import Modal, {
+    ModalFooter,
+} from "../../ui/Modal/Modal";
 
 function Sidebar() {
     const getNavClass = ({
@@ -17,15 +21,26 @@ function Sidebar() {
 
     // const user = getCurrentUser();
 
-    const currentPortal = DEV_PORTAL;
+   const user = getCurrentUser();
 
-    const menu = navigation[currentPortal];
+ const navigate = useNavigate();
+
+const [showLogoutModal, setShowLogoutModal] =
+    useState(false);
+
+const handleLogout = () => {
+    localStorage.removeItem("vitel-user");
+    navigate("/");
+};
+
+const menu = navigation[user.organization];
 
     const [openGroups, setOpenGroups] = useState<
         Record<string, boolean>
     >({
         Tracking: true,
     });
+
 
     return (
         <div className={styles.sidebar}>
@@ -123,8 +138,52 @@ function Sidebar() {
                     );
 
                 })}
-            </nav>
-        </div>
+           </nav>
+
+<div className={styles.footer}>
+
+    <button
+        className={styles.logout}
+        onClick={() => setShowLogoutModal(true)}
+    >
+        🚪 Logout
+    </button>
+
+</div>
+
+<Modal
+    open={showLogoutModal}
+    title="Logout"
+    onClose={() => setShowLogoutModal(false)}
+>
+
+    <p className={styles.logoutText}>
+        Are you sure you want to logout?
+    </p>
+
+    <ModalFooter>
+
+        <button
+            className={styles.cancelButton}
+            onClick={() =>
+                setShowLogoutModal(false)
+            }
+        >
+            Cancel
+        </button>
+
+        <button
+            className={styles.confirmButton}
+            onClick={handleLogout}
+        >
+            Logout
+        </button>
+
+    </ModalFooter>
+
+</Modal>
+
+</div>
     );
 }
 
