@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FiChevronRight, FiChevronDown } from "react-icons/fi";
-import { PortalType } from "../../../config/portals";
-
+import { getPortalFromRole } from "../../../utils/getPortalFromRole";
 import styles from "./Sidebar.module.css";
 import { navigation } from "../../../config/navigation";
 import { getCurrentUser } from "../../../utils/currentUser";
@@ -22,21 +21,21 @@ function Sidebar() {
 
     // const user = getCurrentUser();
 
-   const user = getCurrentUser();
+    const user = getCurrentUser();
 
- const navigate = useNavigate();
+    const navigate = useNavigate();
 
-const [showLogoutModal, setShowLogoutModal] =
-    useState(false);
+    const [showLogoutModal, setShowLogoutModal] =
+        useState(false);
 
-const handleLogout = () => {
-    localStorage.removeItem("vitel-user");
-    navigate("/");
-};
+    const handleLogout = () => {
+        localStorage.removeItem("vitel-user");
+        navigate("/");
+    };
 
-const portal = user?.organization ?? PortalType.POLICE;
+    const portal = getPortalFromRole(user?.role);
 
-const menu = navigation[portal];
+    const menu = navigation[portal];
 
     const [openGroups, setOpenGroups] = useState<
         Record<string, boolean>
@@ -141,52 +140,52 @@ const menu = navigation[portal];
                     );
 
                 })}
-           </nav>
+            </nav>
 
-<div className={styles.footer}>
+            <div className={styles.footer}>
 
-    <button
-        className={styles.logout}
-        onClick={() => setShowLogoutModal(true)}
-    >
-        🚪 Logout
-    </button>
+                <button
+                    className={styles.logout}
+                    onClick={() => setShowLogoutModal(true)}
+                >
+                    🚪 Logout
+                </button>
 
-</div>
+            </div>
 
-<Modal
-    open={showLogoutModal}
-    title="Logout"
-    onClose={() => setShowLogoutModal(false)}
->
+            <Modal
+                open={showLogoutModal}
+                title="Logout"
+                onClose={() => setShowLogoutModal(false)}
+            >
 
-    <p className={styles.logoutText}>
-        Are you sure you want to logout?
-    </p>
+                <p className={styles.logoutText}>
+                    Are you sure you want to logout?
+                </p>
 
-    <ModalFooter>
+                <ModalFooter>
 
-        <button
-            className={styles.cancelButton}
-            onClick={() =>
-                setShowLogoutModal(false)
-            }
-        >
-            Cancel
-        </button>
+                    <button
+                        className={styles.cancelButton}
+                        onClick={() =>
+                            setShowLogoutModal(false)
+                        }
+                    >
+                        Cancel
+                    </button>
 
-        <button
-            className={styles.confirmButton}
-            onClick={handleLogout}
-        >
-            Logout
-        </button>
+                    <button
+                        className={styles.confirmButton}
+                        onClick={handleLogout}
+                    >
+                        Logout
+                    </button>
 
-    </ModalFooter>
+                </ModalFooter>
 
-</Modal>
+            </Modal>
 
-</div>
+        </div>
     );
 }
 

@@ -1,5 +1,6 @@
-import { PortalType } from "../../../config/portals";
 import { getCurrentUser } from "../../../utils/currentUser";
+import { getPortalFromRole } from "../../../utils/getPortalFromRole";
+import { PortalType } from "../../../config/portals";
 
 import SuperAdminDashboard from "../portals/SuperAdminDashboard";
 import PoliceDashboard from "../portals/PoliceDashboard";
@@ -7,13 +8,13 @@ import InsuranceDashboard from "../portals/InsuranceDashboard";
 import VitelDashboard from "../portals/VitelDashboard";
 
 function DashboardPage() {
-
     const user = getCurrentUser();
 
-    const portal =
-        user?.organization ?? PortalType.POLICE;
+    const portal = getPortalFromRole(user?.role);
 
     switch (portal) {
+        case PortalType.SUPER_ADMIN:
+            return <SuperAdminDashboard />;
 
         case PortalType.POLICE:
             return <PoliceDashboard />;
@@ -24,12 +25,9 @@ function DashboardPage() {
         case PortalType.VITEL:
             return <VitelDashboard />;
 
-        case PortalType.SUPER_ADMIN:
         default:
-            return <SuperAdminDashboard />;
-
+            return <PoliceDashboard />;
     }
-
 }
 
 export default DashboardPage;

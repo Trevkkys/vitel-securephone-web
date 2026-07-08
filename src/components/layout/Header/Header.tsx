@@ -32,8 +32,17 @@ function Header() {
             );
     }, []);
 
+    const displayName =
+        user?.full_name ||
+        user?.email ||
+        "User";
+
+    const avatar =
+        displayName.charAt(0).toUpperCase();
+
     const logout = () => {
         localStorage.removeItem("vitel-user");
+        localStorage.removeItem("access_token");
         navigate("/");
     };
 
@@ -47,9 +56,8 @@ function Header() {
                 </h3>
 
                 <p className={styles.subtitle}>
-                    {user?.name ?? "User"}
+                    {displayName}
                 </p>
-
             </div>
 
             <div className={styles.rightSection}>
@@ -69,14 +77,13 @@ function Header() {
                     >
 
                         <div className={styles.avatar}>
-                            {user?.name.charAt(0).toUpperCase()}
+                            {avatar}
                         </div>
 
                         <div className={styles.userInfo}>
-                            <span>{user?.name ?? "User"}</span>
+                            <span>{displayName}</span>
                             <small>{user?.role ?? "Role"}</small>
                         </div>
-
 
                     </button>
 

@@ -4,8 +4,9 @@ import styles from "./LoginPage.module.css";
 import logo from "../../../assets/images/vitel-logo.png";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { DEMO_USERS } from "../../../config/demoUsers";
+import { login } from "../../../services/auth.service";
 import toast from "react-hot-toast";
+import { getCurrentUser } from "../../../services/user.service";
 
 function LoginPage() {
     const navigate = useNavigate();
@@ -22,37 +23,32 @@ function LoginPage() {
 
         setLoading(true);
 
-        const user = DEMO_USERS.find(
-            (u) =>
-                u.email.toLowerCase() ===
-                email.toLowerCase() &&
-                u.password === password
-        );
+        try {
+            const data = await login(email, password);
 
-        if (!user) {
-            setLoading(false);
+            localStorage.setItem(
+                "access_token",
+                data.access_token
+            );
+
+            const user = await getCurrentUser();
+
+            localStorage.setItem(
+                "vitel-user",
+                JSON.stringify(user)
+            );
+
+            toast.success("Login successful!");
+
+            navigate("/dashboard", {
+                replace: true,
+            });
+        } catch (error) {
+            console.error(error);
             toast.error("Invalid email or password.");
-            return;
+        } finally {
+            setLoading(false);
         }
-
-        await new Promise((resolve) =>
-            setTimeout(resolve, 900)
-        );
-
-        localStorage.setItem(
-            "vitel-user",
-            JSON.stringify({
-                email: user.email,
-                name: user.name,
-                organization: user.portal,
-                role: "ADMIN",
-            })
-        );
-        toast.success(`Welcome back, ${user.name}!`);
-
-        setTimeout(() => {
-            navigate("/dashboard", { replace: true });
-        }, 500);
     };
 
     return (

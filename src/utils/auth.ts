@@ -3,12 +3,7 @@ import type { User } from "../types/user";
 export function getCurrentUser(): User | null {
     const user = localStorage.getItem("vitel-user");
 
-    if (!user) {
-        return {
-            organization:
-                import.meta.env.DEV ? "INSURANCE" : "POLICE",
-        } as User;
-    }
+    if (!user) return null;
 
     return JSON.parse(user);
 }
