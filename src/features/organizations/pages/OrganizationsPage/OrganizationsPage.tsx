@@ -20,7 +20,11 @@ function OrganizationsPage() {
                 description="Manage partner organizations, portal access and enabled modules."
                 action={
                     <div className={styles.headerButton}>
-                        <Button>
+                        <Button
+                            onClick={() =>
+                                navigate("/dashboard/organizations/create")
+                            }
+                        >
                             + Add Organization
                         </Button>
                     </div>

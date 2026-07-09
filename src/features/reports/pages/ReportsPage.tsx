@@ -4,12 +4,12 @@ import Button from "../../../components/ui/Button/Button";
 import { getCurrentUser } from "../../../utils/auth";
 import { PortalType } from "../../../config/portals";
 import styles from "./ReportsPage.module.css";
+import { getPortalFromRole } from "../../../utils/getPortalFromRole";
 
 function ReportsPage() {
     const user = getCurrentUser();
 
-    const portal =
-        user?.organization ?? PortalType.POLICE;
+    const portal = getPortalFromRole(user?.role);
 
     const reportData = {
         [PortalType.SUPER_ADMIN]: {

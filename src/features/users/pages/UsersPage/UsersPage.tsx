@@ -6,21 +6,32 @@ import styles from "./UsersPage.module.css";
 import { getCurrentUser } from "../../../../utils/auth";
 import { PortalType } from "../../../../config/portals";
 import { portalContent } from "../../../../config/portalContent";
+import { getPortalFromRole } from "../../../../utils/getPortalFromRole";
+import Button from "../../../../components/ui/Button/Button";
 
 function UsersPage() {
     const user = getCurrentUser();
 
     const navigate = useNavigate();
 
-    const portal =
-        user?.organization ?? PortalType.POLICE;
+    const portal = getPortalFromRole(user?.role);
 
     const content =
-        portalContent[
         portal === PortalType.SUPER_ADMIN
-            ? PortalType.POLICE
-            : portal
-        ];
+            ? {
+                users: {
+                    title: "Platform Users",
+                    description:
+                        "Manage administrators, Vitel staff, police and insurance users.",
+                    roles: [
+                        "admin",
+                        "vitel_staff",
+                        "police",
+                        "insurance",
+                    ],
+                },
+            }
+            : portalContent[portal];
 
     const title = content.users.title;
 
@@ -194,7 +205,9 @@ function UsersPage() {
             ? policeUsers
             : portal === PortalType.INSURANCE
                 ? insuranceUsers
-                : vitelUsers;
+                : portal === PortalType.VITEL
+                    ? vitelUsers
+                    : [];
     const roleOptions = content.users.roles;
 
     const actionItems = [
@@ -257,6 +270,12 @@ function UsersPage() {
                     className={styles.search}
                     placeholder="Search users..."
                 />
+
+                <Button
+                    onClick={() => navigate("/dashboard/users/create")}
+                >
+                    + User
+                </Button>
 
                 <select className={styles.select}>
 

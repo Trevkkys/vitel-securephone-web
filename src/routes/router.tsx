@@ -31,7 +31,7 @@ import RolesPage from "../features/roles/pages/RolesPage/RolesPage";
 import CustomersPage from "../features/customers/pages/CustomersPage";
 import MonitoringPage from "../features/monitoring/pages/MonitoringPage";
 import SupportPage from "../features/support/pages/SupportPage";
-
+import CreateOrganizationPage from "../features/organizations/pages/createorganizationpage/CreateOrganizationPage";
 import ProtectedRoute from "../components/auth/ProtectedRoute";
 
 
@@ -88,6 +88,10 @@ export const router = createBrowserRouter([
             {
                 path: "organizations/:organizationId/activity",
                 element: <OrganizationActivityPage />,
+            },
+            {
+                path: "organizations/create",
+                element: <CreateOrganizationPage />,
             },
             {
                 path: "reports",

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import PageHeader from "../../../../components/common/PageHeader/PageHeader";
 import Button from "../../../../components/ui/Button/Button";
 import Toggle from "../../../../components/ui/Toggle/Toggle";
+import { getPortalFromRole } from "../../../../utils/getPortalFromRole";
 import {
     policePermissionGroups,
     insurancePermissionGroups,
@@ -20,22 +21,25 @@ import styles from "./RolesPage.module.css";
 function RolesPage() {
     const user = getCurrentUser();
 
-    const portal =
-        user?.organization ?? PortalType.POLICE;
+    const portal = getPortalFromRole(user?.role);
 
     const roles =
         portal === PortalType.POLICE
             ? policeRoles
             : portal === PortalType.INSURANCE
                 ? insuranceRoles
-                : vitelRoles;
+                : portal === PortalType.VITEL
+                    ? vitelRoles
+                    : [];
 
     const permissionGroups =
         portal === PortalType.POLICE
             ? policePermissionGroups
             : portal === PortalType.INSURANCE
                 ? insurancePermissionGroups
-                : vitelPermissionGroups;
+                : portal === PortalType.VITEL
+                    ? vitelPermissionGroups
+                    : [];
 
     const [selectedRole, setSelectedRole] =
         useState(roles[0]);
@@ -73,18 +77,22 @@ function RolesPage() {
         <>
             <PageHeader
                 title={
-                    portal === PortalType.POLICE
-                        ? "Police Roles & Permissions"
-                        : portal === PortalType.INSURANCE
-                            ? "Insurance Roles & Permissions"
-                            : "Vitel Roles & Permissions"
+                    portal === PortalType.SUPER_ADMIN
+                        ? "Platform Roles & Permissions"
+                        : portal === PortalType.POLICE
+                            ? "Police Roles & Permissions"
+                            : portal === PortalType.INSURANCE
+                                ? "Insurance Roles & Permissions"
+                                : "Vitel Roles & Permissions"
                 }
                 description={
-                    portal === PortalType.POLICE
-                        ? "Configure police user permissions."
-                        : portal === PortalType.INSURANCE
-                            ? "Configure insurance user permissions."
-                            : "Configure Vitel staff permissions."
+                    portal === PortalType.SUPER_ADMIN
+                        ? "Manage platform-wide roles."
+                        : portal === PortalType.POLICE
+                            ? "Configure police user permissions."
+                            : portal === PortalType.INSURANCE
+                                ? "Configure insurance user permissions."
+                                : "Configure Vitel staff permissions."
                 }
             />
 

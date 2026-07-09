@@ -1,5 +1,6 @@
 import { PortalType } from "../../../config/portals";
 import { getCurrentUser } from "../../../utils/currentUser";
+import { getPortalFromRole } from "../../../utils/getPortalFromRole";
 
 import SuperAdminCases from "../portals/SuperAdminCases";
 import PoliceCases from "../portals/PoliceCases";
@@ -7,12 +8,13 @@ import InsuranceClaims from "../portals/InsuranceClaims";
 import VitelCases from "../portals/VitelCases";
 
 function CasesPage() {
-
     const user = getCurrentUser();
 
-   const portal = user?.organization ?? PortalType.POLICE;
+    const portal = getPortalFromRole(user?.role);
 
-switch (portal) {
+    switch (portal) {
+        case PortalType.SUPER_ADMIN:
+            return <SuperAdminCases />;
 
         case PortalType.POLICE:
             return <PoliceCases />;
@@ -23,12 +25,9 @@ switch (portal) {
         case PortalType.VITEL:
             return <VitelCases />;
 
-        case PortalType.SUPER_ADMIN:
         default:
-            return <SuperAdminCases />;
-
+            return <PoliceCases />;
     }
-
 }
 
 export default CasesPage;

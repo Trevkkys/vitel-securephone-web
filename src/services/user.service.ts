@@ -18,9 +18,11 @@ export async function getCurrentUser() {
     return response.data;
 }
 
-export async function createUser(
-    data: CreateUserRequest
-): Promise<UserResponse> {
+export async function createUser(data: {
+    email: string;
+    password: string;
+    role: string;
+}) {
     const response = await api.post(
         "/create/user",
         data
