@@ -18,7 +18,7 @@ function CreateOrganizationPage() {
     const [loading, setLoading] = useState(false);
 
     async function handleSubmit(
-        e: React.FormEvent
+        e: React.FormEvent<HTMLFormElement>
     ) {
         e.preventDefault();
 
@@ -38,9 +38,10 @@ function CreateOrganizationPage() {
             );
 
             navigate("/dashboard/organizations");
-        } catch (error: any) {
+        } catch (error) {
+            console.error(error);
+
             toast.error(
-                error?.response?.data?.detail ??
                 "Failed to create organization."
             );
         } finally {
