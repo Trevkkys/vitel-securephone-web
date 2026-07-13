@@ -1,12 +1,51 @@
 import styles from "./SuperAdminCases.module.css";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+
 import ActionMenu from "../../../components/ui/ActionMenu/ActionMenu";
-import { useState } from "react";
-import Modal, { ModalFooter, } from "../../../components/ui/Modal/Modal";
+import Modal, {
+    ModalFooter,
+} from "../../../components/ui/Modal/Modal";
 import Button from "../../../components/ui/Button/Button";
+
+import {
+    getCases,
+    getCaseTimeline,
+} from "../../../services/case.service";
+
+interface CaseItem {
+    id: number;
+    case_number: string;
+    device_id: number;
+    status: string;
+    incident_location: string;
+    police_station: string;
+    is_police_report_verified: boolean;
+    assigned_officer_id: number;
+    last_seen_location: string;
+    last_seen_at: string;
+    created_at: string;
+}
+
+interface TimelineItem {
+    title: string;
+    description: string;
+    is_completed: boolean;
+    created_at: string;
+}
 
 function CasesPage() {
     const navigate = useNavigate();
+
+    const [cases, setCases] = useState<CaseItem[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    const [selectedCase, setSelectedCase] =
+        useState<CaseItem | null>(null);
+
+    const [timeline, setTimeline] =
+        useState<TimelineItem[]>([]);
 
     const [assignOfficerOpen, setAssignOfficerOpen] =
         useState(false);
@@ -19,6 +58,41 @@ function CasesPage() {
 
     const [evidenceOpen, setEvidenceOpen] =
         useState(false);
+
+    useEffect(() => {
+        loadCases();
+    }, []);
+
+    async function loadCases() {
+        try {
+            setLoading(true);
+
+            const data = await getCases();
+
+            setCases(data);
+        } catch (error) {
+            console.error(error);
+            toast.error("Unable to load cases.");
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    async function openTimeline(item: CaseItem) {
+        try {
+            setSelectedCase(item);
+
+            const data = await getCaseTimeline(item.id);
+
+            setTimeline(data);
+
+            setTimelineOpen(true);
+        } catch (error) {
+            console.error(error);
+
+            toast.error("Unable to load timeline.");
+        }
+    }
 
     return (
         <>
@@ -38,7 +112,7 @@ function CasesPage() {
 
             <div className={styles.filters}>
                 <input
-                    placeholder="Search by Case Number, IMEI or Subscriber..."
+                    placeholder="Search by Case Number..."
                     className={styles.search}
                 />
 
@@ -49,225 +123,292 @@ function CasesPage() {
                     <option>Recovered</option>
                     <option>Closed</option>
                 </select>
-
-                <select className={styles.select}>
-                    <option>All Priority</option>
-                    <option>High</option>
-                    <option>Medium</option>
-                    <option>Low</option>
-                </select>
             </div>
 
             <div className={styles.summary}>
-
                 <div className={styles.summaryCard}>
-                    <h3>Open</h3>
-                    <span>245</span>
+                    <h3>Total</h3>
+                    <span>{cases.length}</span>
                 </div>
 
                 <div className={styles.summaryCard}>
-                    <h3>Investigating</h3>
-                    <span>128</span>
+                    <h3>Verified</h3>
+                    <span>
+                        {
+                            cases.filter(
+                                (c) =>
+                                    c.is_police_report_verified
+                            ).length
+                        }
+                    </span>
                 </div>
 
                 <div className={styles.summaryCard}>
                     <h3>Recovered</h3>
-                    <span>58</span>
+                    <span>
+                        {
+                            cases.filter(
+                                (c) =>
+                                    c.status === "Recovered"
+                            ).length
+                        }
+                    </span>
                 </div>
 
                 <div className={styles.summaryCard}>
-                    <h3>Closed</h3>
-                    <span>763</span>
+                    <h3>Open</h3>
+                    <span>
+                        {
+                            cases.filter(
+                                (c) =>
+                                    c.status === "Open"
+                            ).length
+                        }
+                    </span>
                 </div>
-
             </div>
 
             <div className={styles.tableWrapper}>
-
                 <table className={styles.table}>
-
                     <thead>
-
                         <tr>
-                            <th>Case No</th>
-                            <th>Subscriber</th>
-                            <th>Device</th>
-                            <th>Assigned Officer</th>
-                            <th>Priority</th>
+                            <th>Case Number</th>
+                            <th>Device ID</th>
                             <th>Status</th>
+                            <th>Incident Location</th>
+                            <th>Police Station</th>
+                            <th>Verified</th>
+                            <th>Last Seen</th>
+                            <th>Created</th>
                             <th>Actions</th>
                         </tr>
-
                     </thead>
 
                     <tbody>
-
-                        <tr>
-                            <td>SP-1001</td>
-                            <td>John Doe</td>
-                            <td>iPhone 15 Pro</td>
-                            <td>Inspector Ahmed</td>
-                            <td>High</td>
-                            <td>Investigating</td>
-                            <td className={styles.actions}>
-                                <ActionMenu
-                                    items={[
-                                        {
-                                            label: "Assign Officer",
-                                            onClick: () => setAssignOfficerOpen(true)
-                                        },
-                                        {
-                                            label: "View Timeline",
-                                            onClick: () => setTimelineOpen(true)
-                                        },
-                                        {
-                                            label: "Tracking History",
-                                            onClick: () => setTrackingOpen(true)
-                                        },
-                                        {
-                                            label: "Evidence",
-                                            onClick: () => setEvidenceOpen(true)
-                                        },
-                                        {
-                                            label: "Export Case",
-                                            onClick: () =>
-                                                alert("Export Case"),
-                                        },
-                                        {
-                                            label: "Close Case",
-                                            onClick: () =>
-                                                alert("Close Case"),
-                                        },
-                                    ]}
-                                />
-
-                                <button
-                                    className={styles.viewButton}
-                                    onClick={() =>
-                                        navigate("/dashboard/cases/SP-1001")
-                                    }
+                        {loading ? (
+                            <tr>
+                                <td
+                                    colSpan={9}
+                                    style={{
+                                        textAlign:
+                                            "center",
+                                        padding:
+                                            "30px",
+                                    }}
                                 >
-                                    View Details
-                                </button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>SP-1002</td>
-                            <td>Mary Johnson</td>
-                            <td>Samsung S24 Ultra</td>
-                            <td>Officer Bello</td>
-                            <td>Medium</td>
-                            <td>Open</td>
-                            <td className={styles.actions}>
-                                <ActionMenu
-                                    items={[
-                                        {
-                                            label: "Assign Officer",
-                                            onClick: () => setAssignOfficerOpen(true)
-                                        },
-                                        {
-                                            label: "View Timeline",
-                                            onClick: () => setTimelineOpen(true)
-                                        },
-                                        {
-                                            label: "Tracking History",
-                                            onClick: () => setTrackingOpen(true)
-                                        },
-                                        {
-                                            label: "Evidence",
-                                            onClick: () => setEvidenceOpen(true)
-                                        },
-                                        {
-                                            label: "Export Case",
-                                            onClick: () =>
-                                                alert("Export Case"),
-                                        },
-                                        {
-                                            label: "Close Case",
-                                            onClick: () =>
-                                                alert("Close Case"),
-                                        },
-                                    ]}
-                                />
-
-                                <button
-                                    className={styles.viewButton}
-                                    onClick={() =>
-                                        navigate("/dashboard/cases/SP-1002")
-                                    }
+                                    Loading...
+                                </td>
+                            </tr>
+                        ) : cases.length === 0 ? (
+                            <tr>
+                                <td
+                                    colSpan={9}
+                                    style={{
+                                        textAlign:
+                                            "center",
+                                        padding:
+                                            "30px",
+                                    }}
                                 >
-                                    View Details
-                                </button>
-                            </td>
-                        </tr>
+                                    No cases found.
+                                </td>
+                            </tr>
+                        ) : (
+                            cases.map((item) => (
+                                <tr key={item.id}>
+                                    <td>
+                                        {item.case_number}
+                                    </td>
 
-                        <tr>
-                            <td>SP-1003</td>
-                            <td>David Smith</td>
-                            <td>Google Pixel 9</td>
-                            <td>Inspector Musa</td>
-                            <td>Low</td>
-                            <td>Recovered</td>
-                            <td className={styles.actions}>
-                                <ActionMenu
-                                    items={[
-                                        {
-                                            label: "Assign Officer",
-                                            onClick: () => setAssignOfficerOpen(true)
-                                        },
-                                        {
-                                            label: "View Timeline",
-                                            onClick: () => setTimelineOpen(true)
-                                        },
-                                        {
-                                            label: "Tracking History",
-                                            onClick: () => setTrackingOpen(true)
-                                        },
-                                        {
-                                            label: "Evidence",
-                                            onClick: () => setEvidenceOpen(true)
-                                        },
-                                        {
-                                            label: "Export Case",
-                                            onClick: () =>
-                                                alert("Export Case"),
-                                        },
-                                        {
-                                            label: "Close Case",
-                                            onClick: () =>
-                                                alert("Close Case"),
-                                        },
-                                    ]}
-                                />
+                                    <td>
+                                        {item.device_id}
+                                    </td>
 
-                                <button
-                                    className={styles.viewButton}
-                                    onClick={() =>
-                                        navigate("/dashboard/cases/SP-1003")
-                                    }
-                                >
-                                    View Details
-                                </button>
-                            </td>
-                        </tr>
+                                    <td>
+                                        {item.status}
+                                    </td>
 
+                                    <td>
+                                        {
+                                            item.incident_location
+                                        }
+                                    </td>
+
+                                    <td>
+                                        {
+                                            item.police_station
+                                        }
+                                    </td>
+
+                                    <td>
+                                        {item.is_police_report_verified
+                                            ? "Yes"
+                                            : "No"}
+                                    </td>
+
+                                    <td>
+                                        {
+                                            item.last_seen_location
+                                        }
+                                    </td>
+
+                                    <td>
+                                        {new Date(
+                                            item.created_at
+                                        ).toLocaleDateString()}
+                                    </td>
+
+                                    <td className={styles.actions}>
+                                        <ActionMenu
+                                            items={[
+                                                {
+                                                    label: "Assign Officer",
+                                                    onClick:
+                                                        () => {
+                                                            setSelectedCase(
+                                                                item
+                                                            );
+                                                            setAssignOfficerOpen(
+                                                                true
+                                                            );
+                                                        },
+                                                },
+                                                {
+                                                    label: "View Timeline",
+                                                    onClick:
+                                                        () =>
+                                                            openTimeline(
+                                                                item
+                                                            ),
+                                                },
+                                                {
+                                                    label: "Tracking History",
+                                                    onClick:
+                                                        () => {
+                                                            setSelectedCase(
+                                                                item
+                                                            );
+                                                            setTrackingOpen(
+                                                                true
+                                                            );
+                                                        },
+                                                },
+                                                {
+                                                    label: "Evidence",
+                                                    onClick:
+                                                        () => {
+                                                            setSelectedCase(
+                                                                item
+                                                            );
+                                                            setEvidenceOpen(
+                                                                true
+                                                            );
+                                                        },
+                                                },
+                                            ]}
+                                        />
+
+                                        <button
+                                            className={
+                                                styles.viewButton
+                                            }
+                                            onClick={() =>
+                                                navigate(
+                                                    `/dashboard/cases/${item.id}`
+                                                )
+                                            }
+                                        >
+                                            View Details
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))
+                        )}
                     </tbody>
-
                 </table>
-
             </div>
+
+            <Modal
+                open={timelineOpen}
+                title={
+                    selectedCase
+                        ? `Timeline - ${selectedCase.case_number}`
+                        : "Case Timeline"
+                }
+                onClose={() => {
+                    setTimelineOpen(false);
+                    setTimeline([]);
+                }}
+            >
+                {timeline.length === 0 ? (
+                    <p>No timeline available.</p>
+                ) : (
+                    <ul
+                        style={{
+                            lineHeight: "2",
+                            paddingLeft: "20px",
+                        }}
+                    >
+                        {timeline.map((event, index) => (
+                            <li key={index}>
+                                <strong>
+                                    {new Date(
+                                        event.created_at
+                                    ).toLocaleString()}
+                                </strong>
+
+                                <br />
+
+                                {event.title}
+
+                                <br />
+
+                                <span
+                                    style={{
+                                        color: "#777",
+                                    }}
+                                >
+                                    {event.description}
+                                </span>
+
+                                <br />
+
+                                <span
+                                    style={{
+                                        color: event.is_completed
+                                            ? "green"
+                                            : "orange",
+                                    }}
+                                >
+                                    {event.is_completed
+                                        ? "Completed"
+                                        : "Pending"}
+                                </span>
+                            </li>
+                        ))}
+                    </ul>
+                )}
+
+                <ModalFooter>
+                    <Button
+                        variant="secondary"
+                        onClick={() => {
+                            setTimelineOpen(false);
+                            setTimeline([]);
+                        }}
+                    >
+                        Close
+                    </Button>
+                </ModalFooter>
+            </Modal>
 
             <Modal
                 open={assignOfficerOpen}
                 title="Assign Officer"
-                onClose={() =>
-                    setAssignOfficerOpen(false)
-                }
+                onClose={() => setAssignOfficerOpen(false)}
             >
                 <p>
-                    Select an officer that will
-                    handle this investigation.
+                    Select an officer that will handle this investigation.
                 </p>
 
                 <select
@@ -277,21 +418,12 @@ function CasesPage() {
                         marginTop: "20px",
                     }}
                 >
-                    <option>
-                        Inspector Ahmed
-                    </option>
-
-                    <option>
-                        Officer Bello
-                    </option>
-
-                    <option>
-                        Inspector Musa
-                    </option>
+                    <option>Inspector Ahmed</option>
+                    <option>Officer Bello</option>
+                    <option>Inspector Musa</option>
                 </select>
 
                 <ModalFooter>
-
                     <Button
                         variant="secondary"
                         onClick={() =>
@@ -304,53 +436,7 @@ function CasesPage() {
                     <Button>
                         Assign
                     </Button>
-
                 </ModalFooter>
-            </Modal>
-
-            <Modal
-                open={timelineOpen}
-                title="Case Timeline"
-                onClose={() =>
-                    setTimelineOpen(false)
-                }
-            >
-                <ul
-                    style={{
-                        lineHeight: "2",
-                        paddingLeft: "20px",
-                    }}
-                >
-                    <li>
-                        05 Jun 2026 — Theft reported
-                    </li>
-
-                    <li>
-                        05 Jun 2026 — Case assigned
-                    </li>
-
-                    <li>
-                        06 Jun 2026 — Device detected in Lagos
-                    </li>
-
-                    <li>
-                        07 Jun 2026 — Investigation ongoing
-                    </li>
-                </ul>
-
-                <ModalFooter>
-
-                    <Button
-                        variant="secondary"
-                        onClick={() =>
-                            setTimelineOpen(false)
-                        }
-                    >
-                        Close
-                    </Button>
-
-                </ModalFooter>
-
             </Modal>
 
             <Modal
@@ -360,10 +446,9 @@ function CasesPage() {
                     setEvidenceOpen(false)
                 }
             >
-
                 <p>
-                    Upload or record evidence related to
-                    this investigation.
+                    Upload or record evidence related to this
+                    investigation.
                 </p>
 
                 <input
@@ -387,7 +472,6 @@ function CasesPage() {
                 />
 
                 <ModalFooter>
-
                     <Button
                         variant="secondary"
                         onClick={() =>
@@ -400,9 +484,7 @@ function CasesPage() {
                     <Button>
                         Save Evidence
                     </Button>
-
                 </ModalFooter>
-
             </Modal>
 
             <Modal
@@ -412,54 +494,25 @@ function CasesPage() {
                     setTrackingOpen(false)
                 }
             >
+                {selectedCase ? (
+                    <div>
+                        <p>
+                            <strong>Last Seen:</strong>{" "}
+                            {selectedCase.last_seen_location}
+                        </p>
 
-                <table className={styles.trackingTable}>
-
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Location</th>
-                            <th>Network</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-
-                        <tr>
-                            <td>05 Jun 2026</td>
-                            <td>Lagos</td>
-                            <td>MTN</td>
-                            <td>Detected</td>
-                        </tr>
-
-                        <tr>
-                            <td>06 Jun 2026</td>
-                            <td>Ikeja</td>
-                            <td>Airtel</td>
-                            <td>Detected</td>
-                        </tr>
-
-                        <tr>
-                            <td>07 Jun 2026</td>
-                            <td>Yaba</td>
-                            <td>Glo</td>
-                            <td>Active</td>
-                        </tr>
-
-                        <tr>
-                            <td>08 Jun 2026</td>
-                            <td>Victoria Island</td>
-                            <td>9mobile</td>
-                            <td>Last Seen</td>
-                        </tr>
-
-                    </tbody>
-
-                </table>
+                        <p>
+                            <strong>Recorded At:</strong>{" "}
+                            {new Date(
+                                selectedCase.last_seen_at
+                            ).toLocaleString()}
+                        </p>
+                    </div>
+                ) : (
+                    <p>No tracking information.</p>
+                )}
 
                 <ModalFooter>
-
                     <Button
                         variant="secondary"
                         onClick={() =>
@@ -468,9 +521,7 @@ function CasesPage() {
                     >
                         Close
                     </Button>
-
                 </ModalFooter>
-
             </Modal>
         </>
     );

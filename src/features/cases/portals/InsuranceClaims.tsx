@@ -1,36 +1,141 @@
+import { useState } from "react";
+import toast from "react-hot-toast";
+
 import PageHeader from "../../../components/common/PageHeader/PageHeader";
 import SummaryCard from "../../../components/common/SummaryCard/SummaryCard";
 import ActionMenu from "../../../components/ui/ActionMenu/ActionMenu";
 
+import {
+    approveClaim,
+    rejectClaim,
+    payClaim,
+    getClaim,
+} from "../../../services/case.service";
+
 import styles from "./InsuranceClaims.module.css";
 
 function InsuranceClaims() {
-    const actionItems = [
+    const [selectedClaim, setSelectedClaim] =
+        useState<any>(null);
+
+    const claims = [
         {
-            label: "View Claim",
-            onClick: () => console.log("View Claim"),
+            id: 1,
+            claimNo: "CL-1001",
+            subscriber: "John Doe",
+            device: "iPhone 15 Pro",
+            policy: "INS-44581",
+            status: "Pending",
         },
         {
-            label: "Verify Ownership",
-            onClick: () => console.log("Verify Ownership"),
+            id: 2,
+            claimNo: "CL-1002",
+            subscriber: "Mary Johnson",
+            device: "Samsung S24 Ultra",
+            policy: "INS-66210",
+            status: "Verified",
         },
         {
-            label: "Approve Claim",
-            onClick: () => console.log("Approve Claim"),
+            id: 3,
+            claimNo: "CL-1003",
+            subscriber: "David Smith",
+            device: "Google Pixel 9",
+            policy: "INS-77291",
+            status: "Approved",
         },
         {
-            label: "Process Payment",
-            onClick: () => console.log("Process Payment"),
+            id: 4,
+            claimNo: "CL-1004",
+            subscriber: "Grace Wilson",
+            device: "iPhone 14 Pro",
+            policy: "INS-55891",
+            status: "Rejected",
         },
         {
-            label: "View Documents",
-            onClick: () => console.log("View Documents"),
+            id: 5,
+            claimNo: "CL-1005",
+            subscriber: "Michael Adams",
+            device: "Tecno Phantom X2",
+            policy: "INS-89220",
+            status: "Pending",
         },
         {
-            label: "Reject Claim",
-            onClick: () => console.log("Reject Claim"),
+            id: 6,
+            claimNo: "CL-1006",
+            subscriber: "Sarah Bello",
+            device: "iPhone 13 Pro",
+            policy: "INS-99120",
+            status: "Approved",
+        },
+        {
+            id: 7,
+            claimNo: "CL-1007",
+            subscriber: "Aisha Musa",
+            device: "Redmi Note 14",
+            policy: "INS-11991",
+            status: "Verified",
+        },
+        {
+            id: 8,
+            claimNo: "CL-1008",
+            subscriber: "Daniel Okafor",
+            device: "Samsung Z Fold 6",
+            policy: "INS-33772",
+            status: "Pending",
         },
     ];
+
+    async function handleView(id: number) {
+        try {
+            const data = await getClaim(id);
+
+            setSelectedClaim(data);
+
+            console.log(data);
+
+            toast.success("Claim loaded.");
+        } catch (error) {
+            console.error(error);
+
+            toast.error("Unable to load claim.");
+        }
+    }
+
+    async function handleApprove(id: number) {
+        try {
+            await approveClaim(id);
+
+            toast.success("Claim approved.");
+        } catch (error) {
+            console.error(error);
+
+            toast.error("Unable to approve claim.");
+        }
+    }
+
+    async function handleReject(id: number) {
+        try {
+            await rejectClaim(id);
+
+            toast.success("Claim rejected.");
+        } catch (error) {
+            console.error(error);
+
+            toast.error("Unable to reject claim.");
+        }
+    }
+
+    async function handlePay(id: number) {
+        try {
+            await payClaim(id);
+
+            toast.success("Payment completed.");
+        } catch (error) {
+            console.error(error);
+
+            toast.error("Unable to process payment.");
+        }
+    }
 
     return (
         <>
@@ -40,31 +145,13 @@ function InsuranceClaims() {
             />
 
             <div className={styles.summary}>
-
-                <SummaryCard
-                    title="Total Claims"
-                    value="2,341"
-                />
-
-                <SummaryCard
-                    title="Pending"
-                    value="126"
-                />
-
-                <SummaryCard
-                    title="Approved"
-                    value="1,882"
-                />
-
-                <SummaryCard
-                    title="Rejected"
-                    value="333"
-                />
-
+                <SummaryCard title="Total Claims" value="2,341" />
+                <SummaryCard title="Pending" value="126" />
+                <SummaryCard title="Approved" value="1,882" />
+                <SummaryCard title="Rejected" value="333" />
             </div>
 
             <div className={styles.filters}>
-
                 <input
                     className={styles.search}
                     placeholder="Search claim number, subscriber or policy..."
@@ -86,112 +173,134 @@ function InsuranceClaims() {
                     <option>AXA Mansard</option>
                     <option>Cornerstone</option>
                 </select>
-
             </div>
 
             <div className={styles.tableWrapper}>
-
                 <table className={styles.table}>
-
                     <thead>
-
                         <tr>
-
                             <th>Claim No.</th>
-
                             <th>Subscriber</th>
-
                             <th>Device</th>
-
                             <th>Policy No.</th>
-
                             <th>Status</th>
-
                             <th></th>
-
                         </tr>
-
                     </thead>
 
                     <tbody>
+                        {claims.map((claim) => {
+                            const actionItems = [
+                                {
+                                    label: "View Claim",
+                                    onClick: () => handleView(claim.id),
+                                },
+                                {
+                                    label: "Approve Claim",
+                                    onClick: () =>
+                                        handleApprove(claim.id),
+                                },
+                                {
+                                    label: "Reject Claim",
+                                    onClick: () =>
+                                        handleReject(claim.id),
+                                },
+                                {
+                                    label: "Process Payment",
+                                    onClick: () =>
+                                        handlePay(claim.id),
+                                },
+                                {
+                                    label: "View Documents",
+                                    onClick: () =>
+                                        console.log(
+                                            "Documents",
+                                            claim.id
+                                        ),
+                                },
+                            ];
 
-                        <tr>
-                            <td>CL-1001</td>
-                            <td>John Doe</td>
-                            <td>iPhone 15 Pro</td>
-                            <td>INS-44581</td>
-                            <td><span className={styles.pending}>Pending</span></td>
-                            <td><ActionMenu items={actionItems} /></td>
-                        </tr>
+                            return (
+                                <tr key={claim.id}>
+                                    <td>{claim.claimNo}</td>
 
-                        <tr>
-                            <td>CL-1002</td>
-                            <td>Mary Johnson</td>
-                            <td>Samsung S24 Ultra</td>
-                            <td>INS-66210</td>
-                            <td><span className={styles.verified}>Verified</span></td>
-                            <td><ActionMenu items={actionItems} /></td>
-                        </tr>
+                                    <td>{claim.subscriber}</td>
 
-                        <tr>
-                            <td>CL-1003</td>
-                            <td>David Smith</td>
-                            <td>Google Pixel 9</td>
-                            <td>INS-77291</td>
-                            <td><span className={styles.approved}>Approved</span></td>
-                            <td><ActionMenu items={actionItems} /></td>
-                        </tr>
+                                    <td>{claim.device}</td>
 
-                        <tr>
-                            <td>CL-1004</td>
-                            <td>Grace Wilson</td>
-                            <td>iPhone 14 Pro</td>
-                            <td>INS-55891</td>
-                            <td><span className={styles.rejected}>Rejected</span></td>
-                            <td><ActionMenu items={actionItems} /></td>
-                        </tr>
+                                    <td>{claim.policy}</td>
 
-                        <tr>
-                            <td>CL-1005</td>
-                            <td>Michael Adams</td>
-                            <td>Tecno Phantom X2</td>
-                            <td>INS-89220</td>
-                            <td><span className={styles.pending}>Pending</span></td>
-                            <td><ActionMenu items={actionItems} /></td>
-                        </tr>
+                                    <td>
+                                        <span
+                                            className={
+                                                claim.status ===
+                                                    "Pending"
+                                                    ? styles.pending
+                                                    : claim.status ===
+                                                        "Verified"
+                                                        ? styles.verified
+                                                        : claim.status ===
+                                                            "Approved"
+                                                            ? styles.approved
+                                                            : styles.rejected
+                                            }
+                                        >
+                                            {claim.status}
+                                        </span>
+                                    </td>
 
-                        <tr>
-                            <td>CL-1006</td>
-                            <td>Sarah Bello</td>
-                            <td>iPhone 13 Pro</td>
-                            <td>INS-99120</td>
-                            <td><span className={styles.approved}>Approved</span></td>
-                            <td><ActionMenu items={actionItems} /></td>
-                        </tr>
-
-                        <tr>
-                            <td>CL-1007</td>
-                            <td>Aisha Musa</td>
-                            <td>Redmi Note 14</td>
-                            <td>INS-11991</td>
-                            <td><span className={styles.verified}>Verified</span></td>
-                            <td><ActionMenu items={actionItems} /></td>
-                        </tr>
-
-                        <tr>
-                            <td>CL-1008</td>
-                            <td>Daniel Okafor</td>
-                            <td>Samsung Z Fold 6</td>
-                            <td>INS-33772</td>
-                            <td><span className={styles.pending}>Pending</span></td>
-                            <td><ActionMenu items={actionItems} /></td>
-                        </tr>
-
+                                    <td>
+                                        <ActionMenu
+                                            items={
+                                                actionItems
+                                            }
+                                        />
+                                    </td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
-
                 </table>
-
             </div>
+
+            {selectedClaim && (
+                <div
+                    style={{
+                        marginTop: "20px",
+                        padding: "20px",
+                        border: "1px solid var(--border-color)",
+                        borderRadius: "12px",
+                        background:
+                            "var(--surface)",
+                    }}
+                >
+                    <h3>
+                        Claim Details
+                    </h3>
+
+                    <p>
+                        <strong>ID:</strong>{" "}
+                        {selectedClaim.id}
+                    </p>
+
+                    <p>
+                        <strong>Status:</strong>{" "}
+                        {selectedClaim.status}
+                    </p>
+
+                    <p>
+                        <strong>Case ID:</strong>{" "}
+                        {selectedClaim.case_id ??
+                            "-"}
+                    </p>
+
+                    <p>
+                        <strong>Amount:</strong>{" "}
+                        {selectedClaim.amount ??
+                            "-"}
+                    </p>
+                </div>
+            )}
         </>
     );
 }
