@@ -1,26 +1,39 @@
 import { useEffect, useRef, useState } from "react";
 import { FiBell } from "react-icons/fi";
-import styles from "./NotificationMenu.module.css";
+import toast from "react-hot-toast";
 
-const notifications = [
-    {
-        title: "Case SP-1008 assigned",
-        time: "2 mins ago",
-    },
-    {
-        title: "Claim CL-1032 approved",
-        time: "15 mins ago",
-    },
-    {
-        title: "Database backup completed",
-        time: "1 hour ago",
-    },
-];
+import {
+    getNotifications,
+    markNotificationRead,
+    markAllNotificationsRead,
+} from "../../../services/notification.service";
+
+import type {
+    Notification,
+} from "../../../services/notification.service";
+
+import styles from "./NotificationMenu.module.css";
 
 function NotificationMenu() {
     const [open, setOpen] = useState(false);
 
+    const [notifications, setNotifications] = useState<Notification[]>([]);
+
     const menuRef = useRef<HTMLDivElement>(null);
+
+    async function loadNotifications() {
+        try {
+            const data = await getNotifications();
+            setNotifications(data);
+        } catch (error) {
+            console.error(error);
+            toast.error("Unable to load notifications.");
+        }
+    }
+
+    useEffect(() => {
+        loadNotifications();
+    }, []);
 
     useEffect(() => {
         function handleClick(e: MouseEvent) {
@@ -41,6 +54,44 @@ function NotificationMenu() {
             );
     }, []);
 
+    async function handleRead(id: number) {
+        try {
+            await markNotificationRead(id);
+
+            setNotifications((prev) =>
+                prev.map((notification) =>
+                    notification.id === id
+                        ? {
+                            ...notification,
+                            is_read: true,
+                        }
+                        : notification
+                )
+            );
+        } catch (error) {
+            console.error(error);
+            toast.error("Unable to update notification.");
+        }
+    }
+
+    async function handleReadAll() {
+        try {
+            await markAllNotificationsRead();
+
+            setNotifications((prev) =>
+                prev.map((notification) => ({
+                    ...notification,
+                    is_read: true,
+                }))
+            );
+
+            toast.success("All notifications marked as read.");
+        } catch (error) {
+            console.error(error);
+            toast.error("Unable to update notifications.");
+        }
+    }
+
     return (
         <div
             className={styles.wrapper}
@@ -51,23 +102,65 @@ function NotificationMenu() {
                 onClick={() => setOpen(!open)}
             >
                 <FiBell />
+
+                {notifications.some(
+                    (notification) => !notification.is_read
+                ) && <span className={styles.badge}></span>}
             </button>
 
             {open && (
                 <div className={styles.dropdown}>
 
-                    <h4>Notifications</h4>
+                    <div className={styles.header}>
 
-                    {notifications.map((item) => (
-                        <div
-                            key={item.title}
-                            className={styles.item}
-                        >
-                            <strong>{item.title}</strong>
+                        <h4>Notifications</h4>
 
-                            <small>{item.time}</small>
+                        {notifications.length > 0 && (
+                            <button
+                                className={styles.markAll}
+                                onClick={handleReadAll}
+                            >
+                                Mark all read
+                            </button>
+                        )}
+
+                    </div>
+
+                    {notifications.length === 0 ? (
+
+                        <div className={styles.empty}>
+                            No notifications available.
                         </div>
-                    ))}
+
+                    ) : (
+
+                        notifications.map((item) => (
+
+                            <div
+                                key={item.id}
+                                className={`${styles.item} ${!item.is_read
+                                    ? styles.unread
+                                    : ""
+                                    }`}
+                                onClick={() =>
+                                    handleRead(item.id)
+                                }
+                            >
+                                <strong>{item.title}</strong>
+
+                                <p>{item.body}</p>
+
+                                <small>
+                                    {new Date(
+                                        item.created_at
+                                    ).toLocaleString()}
+                                </small>
+
+                            </div>
+
+                        ))
+
+                    )}
 
                     <button className={styles.viewAll}>
                         View all notifications

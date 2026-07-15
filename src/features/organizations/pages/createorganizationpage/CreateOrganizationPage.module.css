@@ -11,3 +11,12 @@
     gap: 12px;
     margin-top: 10px;
 }
+
+.select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #dcdcdc;
+    margin-bottom: 18px;
+    margin-top: 8px;
+}

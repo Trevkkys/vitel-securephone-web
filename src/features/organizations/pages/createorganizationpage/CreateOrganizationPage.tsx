@@ -15,6 +15,7 @@ function CreateOrganizationPage() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [role, setRole] = useState("police");
     const [loading, setLoading] = useState(false);
 
     async function handleSubmit(
@@ -30,7 +31,7 @@ function CreateOrganizationPage() {
             await createUser({
                 email,
                 password,
-                role: "admin",
+                role,
             });
 
             toast.success(
@@ -60,6 +61,21 @@ function CreateOrganizationPage() {
                 onSubmit={handleSubmit}
                 className={styles.form}
             >
+
+                <div className={styles.field}>
+                    <label>Organization Type</label>
+
+                    <select
+                        value={role}
+                        onChange={(e) => setRole(e.target.value)}
+                        className={styles.select}
+                    >
+                        <option value="police">Police</option>
+                        <option value="insurance">Insurance</option>
+                        <option value="vitel_staff">Vitel Operations</option>
+                    </select>
+                </div>
+
                 <Input
                     placeholder="Administrator Email"
                     value={email}

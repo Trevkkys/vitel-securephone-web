@@ -2,18 +2,39 @@ import SummaryCard from "../../../components/common/SummaryCard/SummaryCard";
 import styles from "./SuperAdminDashboard.module.css";
 import { getCurrentUser } from "../../../utils/auth";
 import { PortalType } from "../../../config/portals";
+import { useEffect, useState } from "react";
+import { getDashboardSummary } from "../../../services/admin.service";
 
 function SuperAdminDashboard() {
     const user = getCurrentUser();
 
-    const name = user?.name ?? "User";
+    const name = user?.full_name ?? user?.email ?? "User";
 
     const role = user?.role ?? "Administrator";
 
-    const organization =
-        user?.organization ?? PortalType.SUPER_ADMIN;
+    const organization = PortalType.SUPER_ADMIN;
 
-    const portalTitle = {
+    const [summary, setSummary] = useState({
+        active_cases: 0,
+        protected_devices: 0,
+        pending_claims: 0,
+        total_subscribers: 0,
+    });
+
+    useEffect(() => {
+        loadSummary();
+    }, []);
+
+    async function loadSummary() {
+        try {
+            const data = await getDashboardSummary();
+            setSummary(data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const portalTitle: Record<PortalType, string> = {
         [PortalType.SUPER_ADMIN]:
             "Welcome to the Vitel SecurePhone Admin Platform",
 
@@ -52,16 +73,16 @@ function SuperAdminDashboard() {
             <div className={styles.grid}>
 
                 <SummaryCard
-                    title="Organizations"
-                    value="12"
-                    trend="+2"
+                    title="Subscribers"
+                    value={summary.total_subscribers.toLocaleString()}
+                    trend=""
                     trendType="up"
-                    subtitle="Active organizations"
+                    subtitle="Registered subscribers"
                 />
 
                 <SummaryCard
                     title="Protected Devices"
-                    value="15,432"
+                    value={summary.protected_devices.toLocaleString()}
                     trend="+18%"
                     trendType="up"
                     subtitle="Across all portals"
@@ -69,7 +90,7 @@ function SuperAdminDashboard() {
 
                 <SummaryCard
                     title="Active Cases"
-                    value="1,245"
+                    value={summary.active_cases.toLocaleString()}
                     trend="+7%"
                     trendType="up"
                     subtitle="Currently under investigation"
@@ -77,7 +98,7 @@ function SuperAdminDashboard() {
 
                 <SummaryCard
                     title="Pending Claims"
-                    value="39"
+                    value={summary.pending_claims.toLocaleString()}
                     trend="-4"
                     trendType="down"
                     subtitle="Awaiting verification"

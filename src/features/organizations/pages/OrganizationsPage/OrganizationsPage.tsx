@@ -1,5 +1,10 @@
 import styles from "./OrganizationsPage.module.css";
-import { organizations } from "../../../../config/organizations";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import {
+    getUsers,
+    deactivateUser,
+} from "../../../../services/user.service";
 import ActionMenu from "../../../../components/ui/ActionMenu/ActionMenu";
 import PageHeader from "../../../../components/common/PageHeader/PageHeader";
 import Button from "../../../../components/ui/Button/Button";
@@ -10,6 +15,47 @@ import { useNavigate } from "react-router-dom";
 function OrganizationsPage() {
 
     const navigate = useNavigate();
+
+    const [organizations, setOrganizations] = useState<any[]>([]);
+
+    const [loading, setLoading] = useState(true);
+
+    async function loadOrganizations() {
+        try {
+            const users = await getUsers();
+
+            const admins = users.filter(
+                (user: any) => user.is_admin
+            );
+
+            setOrganizations(admins);
+        } catch (error) {
+            console.error(error);
+            toast.error("Unable to load organizations.");
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        loadOrganizations();
+    }, []);
+
+    async function handleDeactivate(id: number) {
+        if (!confirm("Deactivate this organization?")) return;
+
+        try {
+            await deactivateUser(id);
+
+            toast.success("Organization deactivated.");
+
+            loadOrganizations();
+        } catch (error) {
+            console.error(error);
+
+            toast.error("Unable to deactivate organization.");
+        }
+    }
 
     return (
         <>
@@ -37,22 +83,22 @@ function OrganizationsPage() {
 
                 <SummaryCard
                     title="Total Organizations"
-                    value="12"
+                    value={organizations.length.toString()}
                 />
 
                 <SummaryCard
                     title="Police Agencies"
-                    value="4"
+                    value="1"
                 />
 
                 <SummaryCard
                     title="Insurance Companies"
-                    value="5"
+                    value="1"
                 />
 
                 <SummaryCard
                     title="Internal Teams"
-                    value="3"
+                    value="1"
                 />
 
             </div>
@@ -103,59 +149,76 @@ function OrganizationsPage() {
 
                     <tbody>
 
-                        {organizations.map((organization) => (
+                        {loading ? (
 
-                            <tr key={organization.id}>
-
-                                <td>{organization.name}</td>
-
-                                <td>{organization.type}</td>
-
-                                <td>{organization.users}</td>
-
-                                <td>{organization.portal}</td>
-
-                                <td>{organization.status}</td>
-
-                                <td>
-
-                                    <ActionMenu
-                                        items={[
-                                            {
-                                                label: "Enable Modules",
-                                                onClick: () => alert("Modules"),
-                                            },
-                                            {
-                                                label: "Administrator",
-                                                onClick: () => alert("Administrator"),
-                                            },
-                                            {
-                                                label: "Suspend",
-                                                onClick: () => alert("Suspend"),
-                                            },
-                                        ]}
-                                    />
-
-                                </td>
-
-                                <td>
-
-                                    <button
-                                        className={styles.viewButton}
-                                        onClick={() =>
-                                            navigate(
-                                                `/dashboard/organizations/${organization.id}`
-                                            )
-                                        }
-                                    >
-                                        View
-                                    </button>
-
-                                </td>
-
+                            <tr>
+                                <td colSpan={7}>Loading...</td>
                             </tr>
 
-                        ))}
+                        ) : organizations.length === 0 ? (
+
+                            <tr>
+                                <td colSpan={7}>No organizations found.</td>
+                            </tr>
+
+                        ) : (
+
+                            organizations.map((organization) => (
+
+                                <tr key={organization.id}>
+
+                                    <td>{organization.full_name || organization.email}</td>
+
+                                    <td>{organization.role}</td>
+
+                                    <td>—</td>
+
+                                    <td>{organization.email}</td>
+
+                                    <td>
+                                        {organization.is_active !== false ? "Active" : "Inactive"}
+                                    </td>
+
+                                    <td>
+
+                                        <ActionMenu
+                                            items={[
+                                                {
+                                                    label: "Enable Modules",
+                                                    onClick: () => alert("Modules"),
+                                                },
+                                                {
+                                                    label: "Administrator",
+                                                    onClick: () => alert("Administrator"),
+                                                },
+                                                {
+                                                    label: "Deactivate",
+                                                    onClick: () =>
+                                                        handleDeactivate(organization.id),
+                                                },
+                                            ]}
+                                        />
+
+                                    </td>
+
+                                    <td>
+
+                                        <button
+                                            className={styles.viewButton}
+                                            onClick={() =>
+                                                navigate(
+                                                    `/dashboard/organizations/${organization.id}`
+                                                )
+                                            }
+                                        >
+                                            View
+                                        </button>
+
+                                    </td>
+
+                                </tr>
+
+                            )))}
 
                     </tbody>
 
