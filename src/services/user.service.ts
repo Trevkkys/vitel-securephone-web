@@ -36,7 +36,20 @@ export async function getUsers() {
     return response.data;
 }
 
+export async function getUser(userId: number) {
+    const response = await api.get(`/users/${userId}`);
+    return response.data;
+}
+
 export async function deactivateUser(userId: number) {
     const response = await api.delete(`/users/${userId}`);
+    return response.data;
+}
+
+export async function reactivateUser(userId: number) {
+    const response = await api.patch(
+        `/users/${userId}/reactivate`
+    );
+
     return response.data;
 }

@@ -1,8 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+
 import Button from "../../../../components/ui/Button/Button";
 import OrganizationHeader from "../../../../components/common/OrganizationHeader/OrganizationHeader";
+
+import { getUser } from "../../../../services/user.service";
+
 import styles from "./OrganizationActivityPage.module.css";
-import { getOrganization } from "../../../../utils/getOrganization";
 
 function OrganizationActivityPage() {
 
@@ -10,11 +15,25 @@ function OrganizationActivityPage() {
 
     const { organizationId } = useParams();
 
-const organization = getOrganization(organizationId!);
+    const [organization, setOrganization] = useState<any>(null);
 
-if (!organization) {
-    return <h2>Organization not found.</h2>;
-}
+    useEffect(() => {
+        async function loadOrganization() {
+            try {
+                const data = await getUser(Number(organizationId));
+                setOrganization(data);
+            } catch (error) {
+                console.error(error);
+                toast.error("Unable to load organization.");
+            }
+        }
+
+        loadOrganization();
+    }, [organizationId]);
+
+    if (!organization) {
+        return <h2>Loading organization...</h2>;
+    }
 
     const activities = [
 
@@ -48,9 +67,9 @@ if (!organization) {
             <div className={styles.spacing} />
 
             <OrganizationHeader
-    title={organization.name}
-    subtitle={`${organization.type} Organization Portal`}
-/>
+                title={organization.full_name ?? organization.email}
+                subtitle={`${organization.role.toUpperCase()} Organization Portal`}
+            />
 
             {activities.map((group) => (
 

@@ -114,39 +114,3 @@ export async function updateLastSeenLocation(
 
     return response.data;
 }
-
-/* ===========================
-   INSURANCE CLAIMS
-=========================== */
-
-export async function getClaim(claimId: number) {
-    const response = await api.get(
-        `/insurance/claims/${claimId}`
-    );
-
-    return response.data;
-}
-
-export async function approveClaim(claimId: number) {
-    const response = await api.patch(
-        `/insurance/claims/${claimId}/approve`
-    );
-
-    return response.data;
-}
-
-export async function rejectClaim(claimId: number) {
-    const response = await api.patch(
-        `/insurance/claims/${claimId}/reject`
-    );
-
-    return response.data;
-}
-
-export async function payClaim(claimId: number) {
-    const response = await api.patch(
-        `/insurance/claims/${claimId}/pay`
-    );
-
-    return response.data;
-}

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import styles from "./DevicesPage.module.css";
 
-import api from "../../../api/api";
+import { getDevices } from "../../../services/device.service";
 
 import DeviceDetailsModal from "../components/DeviceDetailsModal/DeviceDetailsModal";
 import HistoryModal from "../components/HistoryModal/HistoryModal";
@@ -39,11 +40,7 @@ function DevicesPage() {
         try {
             setLoading(true);
 
-            const response = await api.get(
-                "/admin/devices"
-            );
-
-            const data = response.data ?? [];
+            const data = await getDevices();
 
             const mapped = data.map((device: any) => ({
                 id: device.id,
@@ -68,59 +65,17 @@ function DevicesPage() {
                     device.plan ??
                     "-",
                 date: device.created_at
-                    ? new Date(
-                        device.created_at
-                    ).toLocaleDateString()
+                    ? new Date(device.created_at).toLocaleDateString()
                     : "-",
             }));
 
             setDevices(mapped);
         } catch (error) {
-            console.error(error);
+            console.error("Device API failed:", error);
 
-            // Mock data until backend returns real data
-            setDevices([
-                {
-                    id: 1,
-                    imei: "352987654123456",
-                    owner: "John Doe",
-                    device: "iPhone 15 Pro",
-                    color: "Black",
-                    status: "Protected",
-                    plan: "Premium",
-                    date: "01 Jun 2026",
-                },
-                {
-                    id: 2,
-                    imei: "357891234567890",
-                    owner: "Mary Johnson",
-                    device: "Samsung S24 Ultra",
-                    color: "Purple",
-                    status: "Protected",
-                    plan: "Standard",
-                    date: "03 Jun 2026",
-                },
-                {
-                    id: 3,
-                    imei: "351234567890123",
-                    owner: "Michael Adams",
-                    device: "Google Pixel 9",
-                    color: "White",
-                    status: "Stolen",
-                    plan: "Premium",
-                    date: "07 Jun 2026",
-                },
-                {
-                    id: 4,
-                    imei: "353456789012345",
-                    owner: "David Smith",
-                    device: "Tecno Phantom X2",
-                    color: "Blue",
-                    status: "Recovered",
-                    plan: "Standard",
-                    date: "09 Jun 2026",
-                },
-            ]);
+            toast.error("Unable to load devices.");
+
+            setDevices([]);
         } finally {
             setLoading(false);
         }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 import PageHeader from "../../../components/common/PageHeader/PageHeader";
@@ -6,11 +6,12 @@ import SummaryCard from "../../../components/common/SummaryCard/SummaryCard";
 import ActionMenu from "../../../components/ui/ActionMenu/ActionMenu";
 
 import {
+    getClaims,
+    getClaim,
     approveClaim,
     rejectClaim,
     payClaim,
-    getClaim,
-} from "../../../services/case.service";
+} from "../../../services/insurance.service";
 
 import styles from "./InsuranceClaims.module.css";
 
@@ -18,72 +19,26 @@ function InsuranceClaims() {
     const [selectedClaim, setSelectedClaim] =
         useState<any>(null);
 
-    const claims = [
-        {
-            id: 1,
-            claimNo: "CL-1001",
-            subscriber: "John Doe",
-            device: "iPhone 15 Pro",
-            policy: "INS-44581",
-            status: "Pending",
-        },
-        {
-            id: 2,
-            claimNo: "CL-1002",
-            subscriber: "Mary Johnson",
-            device: "Samsung S24 Ultra",
-            policy: "INS-66210",
-            status: "Verified",
-        },
-        {
-            id: 3,
-            claimNo: "CL-1003",
-            subscriber: "David Smith",
-            device: "Google Pixel 9",
-            policy: "INS-77291",
-            status: "Approved",
-        },
-        {
-            id: 4,
-            claimNo: "CL-1004",
-            subscriber: "Grace Wilson",
-            device: "iPhone 14 Pro",
-            policy: "INS-55891",
-            status: "Rejected",
-        },
-        {
-            id: 5,
-            claimNo: "CL-1005",
-            subscriber: "Michael Adams",
-            device: "Tecno Phantom X2",
-            policy: "INS-89220",
-            status: "Pending",
-        },
-        {
-            id: 6,
-            claimNo: "CL-1006",
-            subscriber: "Sarah Bello",
-            device: "iPhone 13 Pro",
-            policy: "INS-99120",
-            status: "Approved",
-        },
-        {
-            id: 7,
-            claimNo: "CL-1007",
-            subscriber: "Aisha Musa",
-            device: "Redmi Note 14",
-            policy: "INS-11991",
-            status: "Verified",
-        },
-        {
-            id: 8,
-            claimNo: "CL-1008",
-            subscriber: "Daniel Okafor",
-            device: "Samsung Z Fold 6",
-            policy: "INS-33772",
-            status: "Pending",
-        },
-    ];
+    const [claims, setClaims] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        loadClaims();
+    }, []);
+
+    async function loadClaims() {
+        try {
+            const data = await getClaims();
+
+            setClaims(data);
+        } catch (error) {
+            console.error(error);
+
+            toast.error("Unable to load claims.");
+        } finally {
+            setLoading(false);
+        }
+    }
 
     async function handleView(id: number) {
         try {
@@ -106,6 +61,8 @@ function InsuranceClaims() {
             await approveClaim(id);
 
             toast.success("Claim approved.");
+
+            loadClaims();
         } catch (error) {
             console.error(error);
 
@@ -118,6 +75,8 @@ function InsuranceClaims() {
             await rejectClaim(id);
 
             toast.success("Claim rejected.");
+
+            loadClaims();
         } catch (error) {
             console.error(error);
 
@@ -130,12 +89,26 @@ function InsuranceClaims() {
             await payClaim(id);
 
             toast.success("Payment completed.");
+
+            loadClaims();
         } catch (error) {
             console.error(error);
 
             toast.error("Unable to process payment.");
         }
     }
+
+    const pending = claims.filter(
+        (c) => c.status === "Pending"
+    ).length;
+
+    const approved = claims.filter(
+        (c) => c.status === "Approved"
+    ).length;
+
+    const rejected = claims.filter(
+        (c) => c.status === "Rejected"
+    ).length;
 
     return (
         <>
@@ -145,10 +118,25 @@ function InsuranceClaims() {
             />
 
             <div className={styles.summary}>
-                <SummaryCard title="Total Claims" value="2,341" />
-                <SummaryCard title="Pending" value="126" />
-                <SummaryCard title="Approved" value="1,882" />
-                <SummaryCard title="Rejected" value="333" />
+                <SummaryCard
+                    title="Total Claims"
+                    value={String(claims.length)}
+                />
+
+                <SummaryCard
+                    title="Pending"
+                    value={String(pending)}
+                />
+
+                <SummaryCard
+                    title="Approved"
+                    value={String(approved)}
+                />
+
+                <SummaryCard
+                    title="Rejected"
+                    value={String(rejected)}
+                />
             </div>
 
             <div className={styles.filters}>
@@ -179,87 +167,95 @@ function InsuranceClaims() {
                 <table className={styles.table}>
                     <thead>
                         <tr>
-                            <th>Claim No.</th>
+                            <th>Case No.</th>
                             <th>Subscriber</th>
-                            <th>Device</th>
-                            <th>Policy No.</th>
+                            <th>Phone</th>
+                            <th>Depreciated Value</th>
+                            <th>Approved Amount</th>
                             <th>Status</th>
                             <th></th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        {claims.map((claim) => {
-                            const actionItems = [
-                                {
-                                    label: "View Claim",
-                                    onClick: () => handleView(claim.id),
-                                },
-                                {
-                                    label: "Approve Claim",
-                                    onClick: () =>
-                                        handleApprove(claim.id),
-                                },
-                                {
-                                    label: "Reject Claim",
-                                    onClick: () =>
-                                        handleReject(claim.id),
-                                },
-                                {
-                                    label: "Process Payment",
-                                    onClick: () =>
-                                        handlePay(claim.id),
-                                },
-                                {
-                                    label: "View Documents",
-                                    onClick: () =>
-                                        console.log(
-                                            "Documents",
-                                            claim.id
-                                        ),
-                                },
-                            ];
 
-                            return (
-                                <tr key={claim.id}>
-                                    <td>{claim.claimNo}</td>
+                        {loading ? (
 
-                                    <td>{claim.subscriber}</td>
+                            <tr>
+                                <td colSpan={6}>Loading...</td>
+                            </tr>
 
-                                    <td>{claim.device}</td>
+                        ) : claims.length === 0 ? (
 
-                                    <td>{claim.policy}</td>
+                            <tr>
+                                <td colSpan={6}>No claims found.</td>
+                            </tr>
 
-                                    <td>
-                                        <span
-                                            className={
-                                                claim.status ===
-                                                    "Pending"
-                                                    ? styles.pending
-                                                    : claim.status ===
-                                                        "Verified"
-                                                        ? styles.verified
-                                                        : claim.status ===
-                                                            "Approved"
+                        ) : (
+
+                            claims.map((claim) => {
+
+                                const actionItems = [
+                                    {
+                                        label: "View Claim",
+                                        onClick: () => handleView(claim.id),
+                                    },
+                                    {
+                                        label: "Approve Claim",
+                                        onClick: () => handleApprove(claim.id),
+                                    },
+                                    {
+                                        label: "Reject Claim",
+                                        onClick: () => handleReject(claim.id),
+                                    },
+                                    {
+                                        label: "Process Payment",
+                                        onClick: () => handlePay(claim.id),
+                                    },
+                                ];
+
+                                return (
+                                    <tr key={claim.id}>
+
+                                        <td>{claim.case_number}</td>
+
+                                        <td>{claim.subscriber_name}</td>
+
+                                        <td>{claim.subscriber_phone}</td>
+
+                                        <td>₦{claim.depreciated_value?.toLocaleString()}</td>
+
+                                        <td>₦{claim.approved_amount?.toLocaleString()}</td>
+
+                                        <td>
+                                            <span
+                                                className={
+                                                    claim.status === "Pending"
+                                                        ? styles.pending
+                                                        : claim.status === "Approved"
                                                             ? styles.approved
-                                                            : styles.rejected
-                                            }
-                                        >
-                                            {claim.status}
-                                        </span>
-                                    </td>
+                                                            : claim.status === "Rejected"
+                                                                ? styles.rejected
+                                                                : styles.verified
+                                                }
+                                            >
+                                                {claim.status}
+                                            </span>
+                                        </td>
 
-                                    <td>
-                                        <ActionMenu
-                                            items={
-                                                actionItems
-                                            }
-                                        />
-                                    </td>
-                                </tr>
-                            );
-                        })}
+                                        <td>
+                                            <ActionMenu items={actionItems} />
+                                        </td>
+
+                                    </tr>
+                                );
+
+                            })
+
+                        )}
+
                     </tbody>
+
                 </table>
             </div>
 
@@ -279,8 +275,18 @@ function InsuranceClaims() {
                     </h3>
 
                     <p>
-                        <strong>ID:</strong>{" "}
-                        {selectedClaim.id}
+                        <strong>Case Number:</strong>{" "}
+                        {selectedClaim.case_number}
+                    </p>
+
+                    <p>
+                        <strong>Subscriber:</strong>{" "}
+                        {selectedClaim.subscriber_name}
+                    </p>
+
+                    <p>
+                        <strong>Phone:</strong>{" "}
+                        {selectedClaim.subscriber_phone}
                     </p>
 
                     <p>
@@ -289,15 +295,18 @@ function InsuranceClaims() {
                     </p>
 
                     <p>
-                        <strong>Case ID:</strong>{" "}
-                        {selectedClaim.case_id ??
-                            "-"}
+                        <strong>Depreciated Value:</strong>{" "}
+                        ₦{selectedClaim.depreciated_value?.toLocaleString()}
                     </p>
 
                     <p>
-                        <strong>Amount:</strong>{" "}
-                        {selectedClaim.amount ??
-                            "-"}
+                        <strong>Approved Amount:</strong>{" "}
+                        ₦{selectedClaim.approved_amount?.toLocaleString()}
+                    </p>
+
+                    <p>
+                        <strong>Reason:</strong>{" "}
+                        {selectedClaim.rejection_reason || "-"}
                     </p>
                 </div>
             )}

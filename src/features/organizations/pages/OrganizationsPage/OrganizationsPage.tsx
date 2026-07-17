@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import {
     getUsers,
     deactivateUser,
+    reactivateUser,
 } from "../../../../services/user.service";
 import ActionMenu from "../../../../components/ui/ActionMenu/ActionMenu";
 import PageHeader from "../../../../components/common/PageHeader/PageHeader";
@@ -24,11 +25,19 @@ function OrganizationsPage() {
         try {
             const users = await getUsers();
 
-            const admins = users.filter(
-                (user: any) => user.is_admin
+            console.log("Users from API:", users);
+
+            const organizations = users.filter(
+                (user: any) =>
+                    user.is_active &&
+                    (
+                        user.role === "police" ||
+                        user.role === "insurance" ||
+                        user.role === "vitel_staff"
+                    )
             );
 
-            setOrganizations(admins);
+            setOrganizations(organizations);
         } catch (error) {
             console.error(error);
             toast.error("Unable to load organizations.");
@@ -54,6 +63,20 @@ function OrganizationsPage() {
             console.error(error);
 
             toast.error("Unable to deactivate organization.");
+        }
+    }
+
+    async function handleReactivate(id: number) {
+        try {
+            await reactivateUser(id);
+
+            toast.success("Organization reactivated.");
+
+            loadOrganizations();
+        } catch (error) {
+            console.error(error);
+
+            toast.error("Unable to reactivate organization.");
         }
     }
 
@@ -191,11 +214,17 @@ function OrganizationsPage() {
                                                     label: "Administrator",
                                                     onClick: () => alert("Administrator"),
                                                 },
-                                                {
-                                                    label: "Deactivate",
-                                                    onClick: () =>
-                                                        handleDeactivate(organization.id),
-                                                },
+                                                organization.is_active
+                                                    ? {
+                                                        label: "Deactivate",
+                                                        onClick: () =>
+                                                            handleDeactivate(organization.id),
+                                                    }
+                                                    : {
+                                                        label: "Reactivate",
+                                                        onClick: () =>
+                                                            handleReactivate(organization.id),
+                                                    },
                                             ]}
                                         />
 

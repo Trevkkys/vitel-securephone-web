@@ -29,6 +29,7 @@ export const navigation: Record<PortalType, NavigationItem[]> = {
         { label: "Devices", icon: FiSmartphone, path: "/dashboard/devices" },
         { label: "Organizations", icon: FiUsers, path: "/dashboard/organizations" },
         { label: "Analytics", icon: FiBarChart2, path: "/dashboard/analytics" },
+        { label: "Reports", icon: FiFileText, path: "/dashboard/reports" },
         { label: "Audit Logs", icon: FiFileText, path: "/dashboard/audit-logs" },
         { label: "Settings", icon: FiSettings, path: "/dashboard/settings" },
     ],
@@ -80,12 +81,6 @@ export const navigation: Record<PortalType, NavigationItem[]> = {
         },
 
         {
-            label: "Reports",
-            icon: FiBarChart2,
-            path: "/dashboard/reports",
-        },
-
-        {
             label: "Settings",
             icon: FiSettings,
             path: "/dashboard/settings",
@@ -121,12 +116,6 @@ export const navigation: Record<PortalType, NavigationItem[]> = {
             label: "Roles & Permissions",
             icon: FiShield,
             path: "/dashboard/roles",
-        },
-
-        {
-            label: "Reports",
-            icon: FiBarChart2,
-            path: "/dashboard/reports",
         },
 
         {

@@ -1,11 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 import Toggle from "../../../../components/ui/Toggle/Toggle";
 import Button from "../../../../components/ui/Button/Button";
 import OrganizationHeader from "../../../../components/common/OrganizationHeader/OrganizationHeader";
 
 import { getOrganization } from "../../../../utils/getOrganization";
+import { getUser } from "../../../../services/user.service";
 
 import styles from "./OrganizationModulesPage.module.css";
 
@@ -13,7 +15,25 @@ function OrganizationModulesPage() {
     const navigate = useNavigate();
     const { organizationId } = useParams();
 
-    const organization = getOrganization(organizationId ?? "");
+    const [organization, setOrganization] = useState<any>(null);
+
+    useEffect(() => {
+        async function loadOrganization() {
+            try {
+                const data = await getUser(Number(organizationId));
+                setOrganization(data);
+            } catch (error) {
+                console.error(error);
+                toast.error("Unable to load organization.");
+            }
+        }
+
+        loadOrganization();
+    }, [organizationId]);
+
+    const organizationConfig = getOrganization(
+        organization?.role ?? ""
+    );
 
     const allModules = [
         {
@@ -102,31 +122,35 @@ function OrganizationModulesPage() {
         },
     ];
 
-    const [modules, setModules] = useState(
-        allModules.map((module) => ({
-            ...module,
-            enabled: organization
-                ? organization.enabledModules.includes(module.name)
-                : false,
-        }))
-    );
+    const [modules, setModules] = useState<any[]>([]);
 
-    if (!organization) {
-        return <h2>Organization not found.</h2>;
-    }
+    useEffect(() => {
+        if (!organizationConfig) return;
+
+        setModules(
+            allModules.map((module) => ({
+                ...module,
+                enabled: organizationConfig.enabledModules.includes(module.name),
+            }))
+        );
+    }, [organizationConfig]);
 
     const toggleModule = (index: number) => {
         setModules((prev) =>
             prev.map((module, i) =>
                 i === index
                     ? {
-                          ...module,
-                          enabled: !module.enabled,
-                      }
+                        ...module,
+                        enabled: !module.enabled,
+                    }
                     : module
             )
         );
     };
+
+    if (!organization) {
+        return <h2>Loading organization...</h2>;
+    }
 
     return (
         <>
@@ -137,8 +161,8 @@ function OrganizationModulesPage() {
             <div className={styles.spacing} />
 
             <OrganizationHeader
-                title={organization.name}
-                subtitle={`${organization.type} Organization Portal`}
+                title={organization.full_name ?? organization.email}
+                subtitle={`${organization.role.toUpperCase()} Organization Portal`}
             />
 
             <div className={styles.panel}>
