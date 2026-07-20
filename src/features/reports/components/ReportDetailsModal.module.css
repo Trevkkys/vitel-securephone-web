@@ -1,0 +1,154 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal {
+    width: min(900px, 95vw);
+    max-height: 90vh;
+    overflow-y: auto;
+
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+
+    position: relative;
+    z-index: 10000;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, .25);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 26px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.header p {
+    margin-top: 4px;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.body {
+    padding: 24px;
+}
+
+.section {
+    margin-bottom: 30px;
+}
+
+.section:last-child {
+    margin-bottom: 0;
+}
+
+.section h3 {
+    margin: 0 0 16px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+.grid div {
+    background: var(--background);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.grid span {
+    display: block;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+}
+
+.grid strong {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-color);
+    word-break: break-word;
+}
+
+.description {
+    margin: 0;
+    padding: 18px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    background: var(--background);
+    line-height: 1.7;
+    color: var(--text-color);
+}
+
+@media (max-width: 768px) {
+
+    .overlay {
+        padding: 12px;
+        align-items: flex-start;
+    }
+
+    .modal {
+        margin-top: 12px;
+        max-height: calc(100vh - 24px);
+    }
+
+    .header {
+        padding: 18px;
+    }
+
+    .body {
+        padding: 18px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+.actionCard {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 18px;
+
+    margin-top: 18px;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 12px;
+
+    background: #fafafa;
+
+}
+
+.actionButtons {
+
+    display: flex;
+
+    gap: 12px;
+
+}

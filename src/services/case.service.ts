@@ -32,40 +32,6 @@ export async function createCase(data: unknown) {
 }
 
 /* ===========================
-   ADMIN / VITEL
-=========================== */
-
-export async function verifyPoliceReport(caseId: number) {
-    const response = await api.patch(
-        `/cases/${caseId}/verify`
-    );
-
-    return response.data;
-}
-
-export async function assignOfficer(
-    caseId: number,
-    data: unknown
-) {
-    const response = await api.patch(
-        `/cases/${caseId}/assign`,
-        data
-    );
-
-    return response.data;
-}
-
-export async function escalateToInsurance(
-    caseId: number
-) {
-    const response = await api.patch(
-        `/cases/${caseId}/escalate-to-insurance`
-    );
-
-    return response.data;
-}
-
-/* ===========================
    POLICE
 =========================== */
 
