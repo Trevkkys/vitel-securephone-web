@@ -61,3 +61,15 @@
     color: var(--text-color);
 
 }
+
+.notice {
+
+    margin: 0 0 10px;
+
+    font-size: 13px;
+
+    color: #6b7280;
+
+    font-style: italic;
+
+}
