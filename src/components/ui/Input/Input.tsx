@@ -4,13 +4,17 @@ interface InputProps {
     type?: string;
     placeholder?: string;
     value?: string;
-    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    disabled?: boolean;
+    onChange?: (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => void;
 }
 
 function Input({
     type = "text",
     placeholder,
     value,
+    disabled = false,
     onChange,
 }: InputProps) {
     return (
@@ -19,6 +23,7 @@ function Input({
             type={type}
             placeholder={placeholder}
             value={value}
+            disabled={disabled}
             onChange={onChange}
         />
     );

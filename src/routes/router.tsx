@@ -26,6 +26,7 @@ import XTracPage from "../features/tracking/pages/XTracPage";
 import MsisdnTrackingPage from "../features/tracking/pages/MsisdnTrackingPage";
 
 import RecoveriesPage from "../features/recoveries/pages/RecoveriesPage/RecoveriesPage";
+import CreateUserPage from "../features/users/pages/Createuser/CreateUserPage";
 import UsersPage from "../features/users/pages/UsersPage/UsersPage";
 import RolesPage from "../features/roles/pages/RolesPage/RolesPage";
 import CustomersPage from "../features/customers/pages/CustomersPage";
@@ -33,6 +34,7 @@ import MonitoringPage from "../features/monitoring/pages/MonitoringPage";
 import SupportPage from "../features/support/pages/SupportPage";
 import CreateOrganizationPage from "../features/organizations/pages/createorganizationpage/CreateOrganizationPage";
 import ProtectedRoute from "../components/auth/ProtectedRoute";
+import ProfilePage from "../features/profile/pages/ProfilePage/ProfilePage";
 
 
 export const router = createBrowserRouter([
@@ -132,6 +134,14 @@ export const router = createBrowserRouter([
             {
                 path: "users",
                 element: <UsersPage />,
+            },
+            {
+                path: "users/create",
+                element: <CreateUserPage />,
+            },
+            {
+                path: "profile",
+                element: <ProfilePage />,
             },
             {
                 path: "roles",

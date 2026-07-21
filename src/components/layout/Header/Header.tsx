@@ -91,8 +91,18 @@ function Header() {
 
                         <div className={styles.dropdown}>
 
-                            <button>
+                            <button
+                                onClick={() => {
+
+                                    setOpen(false);
+
+                                    navigate("/dashboard/profile");
+
+                                }}
+                            >
+
                                 My Profile
+
                             </button>
 
                             <button
