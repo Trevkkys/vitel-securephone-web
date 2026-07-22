@@ -9,6 +9,7 @@ import {
     escalateReport,
     updateBlacklistStatus,
 } from "../../../services/report.service";
+import { getCurrentUser } from "../../../utils/currentUser";
 
 import { getUsers } from "../../../services/user.service";
 import { useEffect, useState } from "react";
@@ -35,6 +36,8 @@ function ReportDetailsModal({
     }, [open]);
 
     if (!open || !report) return null;
+
+    const currentUser = getCurrentUser();
 
     async function loadOfficers() {
         try {
@@ -151,42 +154,28 @@ function ReportDetailsModal({
     }
 
     async function handleAssignOfficer() {
-
         try {
-
-            if (!selectedOfficer) {
-
-                toast.error("Select an officer.");
-
+            if (!currentUser?.id) {
+                toast.error("Unable to determine officer.");
                 return;
-
             }
 
-            await assignOfficer(report.id, {
-                assigned_officer_id: selectedOfficer,
-            });
+            console.log("Assigning report:", report.id);
+            console.log("Officer ID:", currentUser.id);
 
-            report.assigned_officer_id = selectedOfficer;
-
-            const selected = officers.find(
-                (o) => o.id === selectedOfficer
+            await assignOfficer(
+                report.id,
+                currentUser.id
             );
 
-            if (selected) {
-                report.assigned_officer_name =
-                    selected.full_name || selected.email;
-            }
+            toast.success("Officer assigned.");
 
-            toast.success("Officer assigned successfully.");
+            onClose();
 
         } catch (error) {
-
-            console.error(error);
-
+            console.error("Assign officer error:", error);
             toast.error("Unable to assign officer.");
-
         }
-
     }
 
     async function handleEscalate() {

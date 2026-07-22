@@ -43,11 +43,16 @@ export async function verifyReport(
 
 export async function assignOfficer(
     reportId: number,
-    data: unknown
+    officerId: number
 ) {
     const response = await api.patch(
         `/reports/${reportId}/assign`,
-        data
+        null,
+        {
+            params: {
+                officer_id: officerId,
+            },
+        }
     );
 
     return response.data;
