@@ -11,7 +11,6 @@ import {
     getReport,
     getReportTimeline,
     verifyReport,
-    assignOfficer,
     escalateReport,
     closeReport,
     updateSimLockStatus,
@@ -150,25 +149,6 @@ function ReportsPage() {
 
     }
 
-    async function handleAssign(id: number) {
-
-        try {
-
-            await assignOfficer(id, {
-                assigned_officer_id: 1,
-            });
-
-            toast.success("Officer assigned.");
-
-            loadReports();
-
-        } catch {
-
-            toast.error("Assignment failed.");
-
-        }
-
-    }
 
     async function handleEscalate(id: number) {
 
@@ -467,8 +447,7 @@ function ReportsPage() {
 
                                     {
                                         label: "Assign Officer",
-                                        onClick: () =>
-                                            handleAssign(report.id),
+                                        onClick: () => handleView(report.id),
                                     },
 
                                     {
@@ -682,9 +661,8 @@ function ReportsPage() {
             <ReportDetailsModal
                 open={openDetails}
                 report={selectedReport}
-                onClose={() =>
-                    setOpenDetails(false)
-                }
+                onClose={() => setOpenDetails(false)}
+                onAssigned={loadReports}
             />
 
             <ReportTimelineDrawer

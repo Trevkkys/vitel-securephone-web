@@ -7,32 +7,40 @@ import ActionMenu from "../../../components/ui/ActionMenu/ActionMenu";
 
 import {
     getPoliceCases,
-    getPoliceCase,
     updatePoliceCaseStatus,
     updateLastSeenLocation,
 } from "../../../services/case.service";
+
+import { useNavigate } from "react-router-dom";
 
 import styles from "./PoliceCases.module.css";
 
 interface PoliceCase {
     id: number;
-    case_number: string;
-    device_id: number;
+    report_number: string;
     status: string;
     incident_location: string;
     police_station: string;
+    sim_lock_status: string;
+    blacklist_status: string;
+    contact_phone: string;
     is_police_report_verified: boolean;
-    assigned_officer_id: number;
+    device_brand: string;
+    device_model: string;
+    device_imei: string;
+    subscriber_name: string;
+    subscriber_phone: string;
     last_seen_location: string;
     last_seen_at: string;
     created_at: string;
+    assignment_status: string;
 }
 
 function PoliceCases() {
     const [cases, setCases] = useState<PoliceCase[]>([]);
     const [filteredCases, setFilteredCases] = useState<PoliceCase[]>([]);
     const [loading, setLoading] = useState(true);
-
+    const navigate = useNavigate();
     const [search, setSearch] = useState("");
     const [statusFilter, setStatusFilter] = useState("All Status");
 
@@ -62,7 +70,7 @@ function PoliceCases() {
         if (search.trim()) {
             data = data.filter(
                 (item) =>
-                    item.case_number
+                    item.report_number
                         ?.toLowerCase()
                         .includes(search.toLowerCase()) ||
                     item.incident_location
@@ -115,16 +123,7 @@ function PoliceCases() {
     );
 
     async function handleView(caseId: number) {
-        try {
-            const data = await getPoliceCase(caseId);
-
-            console.log(data);
-
-            toast.success("Case loaded.");
-        } catch (error) {
-            console.error(error);
-            toast.error("Unable to load case.");
-        }
+        navigate(`/dashboard/cases/${caseId}`);
     }
 
     async function handleStatus(
@@ -250,7 +249,7 @@ function PoliceCases() {
                             </tr>
                         ) : (filteredCases.map((item) => (
                             <tr key={item.id}>
-                                <td>{item.case_number}</td>
+                                <td>{item.report_number}</td>
 
                                 <td>
                                     {item.incident_location}

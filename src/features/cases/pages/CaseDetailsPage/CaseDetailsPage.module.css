@@ -67,3 +67,69 @@
 .timeline li {
     margin-bottom: 18px;
 }
+
+.headerActions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.statusSelect {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-primary);
+    margin-top: 12px;
+    cursor: pointer;
+}
+
+.statusSelect:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+.statusBadge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: .8rem;
+    font-weight: 600;
+}
+
+.success {
+    background: #dff6e8;
+    color: #0f7a38;
+}
+
+.warning {
+    background: #fff3d6;
+    color: #9a6700;
+}
+
+.info {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.danger {
+    background: #fde2e2;
+    color: #b42318;
+}
+
+.defaultStatus {
+    background: #ececec;
+    color: #555;
+}
+
+.export {
+    white-space: nowrap;
+    min-width: 130px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

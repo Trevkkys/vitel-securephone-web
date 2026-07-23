@@ -34,7 +34,7 @@
 .tableWrapper {
     background: var(--surface);
     border-radius: 12px;
-    overflow: hidden;
+    overflow: visible;
     box-shadow: var(--shadow-sm);
 }
 

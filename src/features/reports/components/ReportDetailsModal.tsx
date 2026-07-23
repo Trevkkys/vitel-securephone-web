@@ -18,12 +18,14 @@ interface Props {
     open: boolean;
     report: any;
     onClose: () => void;
+    onAssigned: () => void;
 }
 
 function ReportDetailsModal({
     open,
     report,
     onClose,
+    onAssigned,
 }: Props) {
 
     const [officers, setOfficers] = useState<any[]>([]);
@@ -38,6 +40,8 @@ function ReportDetailsModal({
     if (!open || !report) return null;
 
     const currentUser = getCurrentUser();
+
+    console.log("Current User Object:", currentUser);
 
     async function loadOfficers() {
         try {
@@ -155,20 +159,22 @@ function ReportDetailsModal({
 
     async function handleAssignOfficer() {
         try {
-            if (!currentUser?.id) {
-                toast.error("Unable to determine officer.");
+            if (!selectedOfficer) {
+                toast.error("Please select a police officer.");
                 return;
             }
 
             console.log("Assigning report:", report.id);
-            console.log("Officer ID:", currentUser.id);
+            console.log("Officer ID:", selectedOfficer);
 
             await assignOfficer(
                 report.id,
-                currentUser.id
+                Number(selectedOfficer)
             );
 
             toast.success("Officer assigned.");
+
+            await onAssigned();
 
             onClose();
 

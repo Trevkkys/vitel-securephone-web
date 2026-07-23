@@ -4,6 +4,11 @@ import { getCurrentUser } from "../../../utils/auth";
 import { PortalType } from "../../../config/portals";
 import { useEffect, useState } from "react";
 import { getDashboardSummary } from "../../../services/admin.service";
+import {
+    getActivityFeed,
+    getSystemStatus,
+    type ActivityFeedItem,
+} from "../../../services/admin.service";
 
 function SuperAdminDashboard() {
     const user = getCurrentUser();
@@ -15,22 +20,61 @@ function SuperAdminDashboard() {
     const organization = PortalType.SUPER_ADMIN;
 
     const [summary, setSummary] = useState({
-        active_cases: 0,
+        active_reports: 0,
         protected_devices: 0,
         pending_claims: 0,
         total_subscribers: 0,
     });
 
+    const [activities, setActivities] = useState<ActivityFeedItem[]>([]);
+
+    const [systemStatus, setSystemStatus] = useState({
+        api_status: "Checking...",
+        database_status: "Checking...",
+    });
+
     useEffect(() => {
         loadSummary();
+        loadActivityFeed();
+        loadSystemStatus();
     }, []);
+
 
     async function loadSummary() {
         try {
             const data = await getDashboardSummary();
-            setSummary(data);
+
+            setSummary({
+                active_reports: data.active_reports,
+                protected_devices: data.protected_devices,
+                pending_claims: data.pending_claims,
+                total_subscribers: data.total_subscribers,
+            });
         } catch (error) {
             console.error(error);
+        }
+    }
+
+    async function loadActivityFeed() {
+        try {
+            const data = await getActivityFeed();
+            setActivities(data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function loadSystemStatus() {
+        try {
+            const data = await getSystemStatus();
+            setSystemStatus(data);
+        } catch (error) {
+            console.error(error);
+
+            setSystemStatus({
+                api_status: "Offline",
+                database_status: "Offline",
+            });
         }
     }
 
@@ -90,7 +134,7 @@ function SuperAdminDashboard() {
 
                 <SummaryCard
                     title="Active Cases"
-                    value={summary.active_cases.toLocaleString()}
+                    value={summary.active_reports.toLocaleString()}
                     trend="+7%"
                     trendType="up"
                     subtitle="Currently under investigation"
@@ -106,46 +150,60 @@ function SuperAdminDashboard() {
 
             </div>
 
-            {/* Operations */}
+            {/* Recent Activity */}
 
             <div className={styles.operationsGrid}>
 
                 <div className={styles.panel}>
-                    <h2 className={styles.panelTitle}>
-                        Operations Feed
-                    </h2>
+                    <h2 className={styles.panelTitle}>Recent Activity</h2>
 
-                    <ul className={styles.feed}>
-                        <li>
-                            🟢 Police Lagos opened Case #4932
-                        </li>
+                    <table className={styles.activityTable}>
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>User</th>
+                                <th>Activity</th>
+                            </tr>
+                        </thead>
 
-                        <li>
-                            🔵 Insurance approved Claim #2291
-                        </li>
+                        <tbody>
+                            {activities.length === 0 ? (
+                                <tr>
+                                    <td colSpan={3} className={styles.emptyState}>
+                                        No recent activity found.
+                                    </td>
+                                </tr>
+                            ) : (
+                                activities.map((activity) => (
+                                    <tr key={activity.id}>
+                                        <td>
+                                            {new Date(
+                                                activity.created_at
+                                            ).toLocaleString()}
+                                        </td>
 
-                        <li>
-                            🟠 Device detected in Kano
-                        </li>
+                                        <td>{activity.actor_role}</td>
 
-                        <li>
-                            🟢 Police Abuja recovered iPhone 15 Pro
-                        </li>
-
-                        <li>
-                            🟣 New insurance organization onboarded
-                        </li>
-                    </ul>
+                                        <td>{activity.description}</td>
+                                    </tr>
+                                ))
+                            )}
+                        </tbody>
+                    </table>
                 </div>
 
                 <div className={styles.panel}>
                     <h2 className={styles.panelTitle}>
                         System Health
                     </h2>
-
                     <div className={styles.healthItem}>
                         <span>API Service</span>
-                        <span>🟢 Online</span>
+
+                        <span>
+                            {systemStatus.api_status.toLowerCase() === "online"
+                                ? "🟢 Online"
+                                : "🔴 Offline"}
+                        </span>
                     </div>
 
                     <div className={styles.healthItem}>
@@ -160,115 +218,16 @@ function SuperAdminDashboard() {
 
                     <div className={styles.healthItem}>
                         <span>Database</span>
-                        <span>🟢 Healthy</span>
+
+                        <span>
+                            {systemStatus.database_status.toLowerCase() === "online"
+                                ? "🟢 Online"
+                                : "🔴 Offline"}
+                        </span>
                     </div>
                 </div>
 
-            </div>
-
-            {/* Existing Table */}
-
-            <div className={styles.tableWrapper}>
-                <h2 className={styles.tableTitle}>
-                    Recent Case Activity
-                </h2>
-
-                <table className={styles.table}>
-                    <thead>
-                        <tr>
-                            <th>Case No</th>
-                            <th>Subscriber</th>
-                            <th>Phone</th>
-                            <th>IMEI</th>
-                            <th>Date Reported</th>
-                            <th>Last Location</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr>
-                            <td>SP-1001</td>
-                            <td>John Doe</td>
-                            <td>iPhone 15 Pro</td>
-                            <td>352987654123456</td>
-                            <td>05 Jun 2026</td>
-                            <td>Lagos</td>
-                            <td>Active</td>
-                        </tr>
-
-                        <tr>
-                            <td>SP-1002</td>
-                            <td>Mary Johnson</td>
-                            <td>Samsung S24 Ultra</td>
-                            <td>357891234567890</td>
-                            <td>06 Jun 2026</td>
-                            <td>Abuja</td>
-                            <td>Investigating</td>
-                        </tr>
-
-                        <tr>
-                            <td>SP-1003</td>
-                            <td>David Smith</td>
-                            <td>Tecno Phantom X2</td>
-                            <td>353456789012345</td>
-                            <td>06 Jun 2026</td>
-                            <td>Port Harcourt</td>
-                            <td>Recovered</td>
-                        </tr>
-
-                        <tr>
-                            <td>SP-1004</td>
-                            <td>Grace Wilson</td>
-                            <td>iPhone 14 Pro</td>
-                            <td>356789012345678</td>
-                            <td>07 Jun 2026</td>
-                            <td>Kano</td>
-                            <td>Active</td>
-                        </tr>
-
-                        <tr>
-                            <td>SP-1005</td>
-                            <td>Michael Adams</td>
-                            <td>Google Pixel 9</td>
-                            <td>351234567890123</td>
-                            <td>07 Jun 2026</td>
-                            <td>Enugu</td>
-                            <td>Detected</td>
-                        </tr>
-
-                        <tr>
-                            <td>SP-1006</td>
-                            <td>Sarah Bello</td>
-                            <td>iPhone 13 Pro</td>
-                            <td>352222333444555</td>
-                            <td>08 Jun 2026</td>
-                            <td>Ibadan</td>
-                            <td>Active</td>
-                        </tr>
-
-                        <tr>
-                            <td>SP-1007</td>
-                            <td>Daniel Okafor</td>
-                            <td>Samsung Z Fold 6</td>
-                            <td>356666777888999</td>
-                            <td>08 Jun 2026</td>
-                            <td>Benin City</td>
-                            <td>Investigating</td>
-                        </tr>
-
-                        <tr>
-                            <td>SP-1008</td>
-                            <td>Aisha Musa</td>
-                            <td>Redmi Note 14</td>
-                            <td>353333444555666</td>
-                            <td>09 Jun 2026</td>
-                            <td>Lagos</td>
-                            <td>Recovered</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            </div >
         </>
     );
 }

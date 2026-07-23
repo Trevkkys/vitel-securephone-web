@@ -1,62 +1,50 @@
+import { useEffect, useState } from "react";
 import PageHeader from "../../../components/common/PageHeader/PageHeader";
 import SummaryCard from "../../../components/common/SummaryCard/SummaryCard";
 import Button from "../../../components/ui/Button/Button";
 import styles from "./AuditLogsPage.module.css";
 
-const logs = [
-    {
-        time: "09:14 AM",
-        user: "John Ibrahim",
-        organization: "Nigeria Police",
-        action: "Created Case",
-        module: "Case Management",
-        ip: "102.89.xx.xx",
-        status: "Success",
-    },
-    {
-        time: "09:28 AM",
-        user: "Mary Okafor",
-        organization: "Leadway Insurance",
-        action: "Approved Claim",
-        module: "Claims",
-        ip: "102.41.xx.xx",
-        status: "Success",
-    },
-    {
-        time: "10:06 AM",
-        user: "System",
-        organization: "Vitel",
-        action: "Database Backup",
-        module: "System",
-        ip: "--",
-        status: "Success",
-    },
-    {
-        time: "10:41 AM",
-        user: "Admin",
-        organization: "Nigeria Police",
-        action: "Deleted User",
-        module: "Users",
-        ip: "102.61.xx.xx",
-        status: "Failed",
-    },
-    {
-        time: "11:15 AM",
-        user: "Samuel David",
-        organization: "Leadway Insurance",
-        action: "Password Reset",
-        module: "Users",
-        ip: "102.17.xx.xx",
-        status: "Success",
-    },
-];
+import {
+    getAuditLogs,
+    type AuditLogItem,
+} from "../../../services/admin.service";
 
 function AuditLogsPage() {
+
+    const [logs, setLogs] = useState<AuditLogItem[]>([]);
+    const [page, setPage] = useState(1);
+
+    const [action, setAction] = useState("");
+    const [entityType, setEntityType] = useState("");
+
+    const [total, setTotal] = useState(0);
+
+    useEffect(() => {
+        loadLogs();
+    }, [page, action, entityType]);
+
+    async function loadLogs() {
+        try {
+
+            const response = await getAuditLogs({
+                page,
+                action: action || undefined,
+                entity_type: entityType || undefined,
+            });
+
+            setLogs(response.items);
+            setTotal(response.total);
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return (
         <>
             <PageHeader
                 title="Audit Logs"
-                description="Track activities across every organization and module."
+                description="Track every administrative activity across the platform."
                 action={<Button>Export CSV</Button>}
             />
 
@@ -64,34 +52,18 @@ function AuditLogsPage() {
 
                 <SummaryCard
                     title="Total Logs"
-                    value="18,542"
-                    trend="+14%"
+                    value={total.toLocaleString()}
+                    trend=""
                     trendType="up"
-                    subtitle="Past 30 days"
+                    subtitle="All recorded activities"
                 />
 
                 <SummaryCard
-                    title="Today's Activities"
-                    value="328"
-                    trend="+21"
+                    title="Current Page"
+                    value={page.toString()}
+                    trend=""
                     trendType="up"
-                    subtitle="Compared to yesterday"
-                />
-
-                <SummaryCard
-                    title="Failed Actions"
-                    value="17"
-                    trend="-5"
-                    trendType="down"
-                    subtitle="Security incidents"
-                />
-
-                <SummaryCard
-                    title="Active Users"
-                    value="231"
-                    trend="+12"
-                    trendType="up"
-                    subtitle="Currently active"
+                    subtitle="Pagination"
                 />
 
             </div>
@@ -100,25 +72,22 @@ function AuditLogsPage() {
 
                 <div className={styles.filters}>
 
-                    <select>
-                        <option>All Organizations</option>
+                    <select
+                        value={action}
+                        onChange={(e) => setAction(e.target.value)}
+                    >
+                        <option value="">All Actions</option>
+                        <option value="CREATE">Create</option>
+                        <option value="UPDATE">Update</option>
+                        <option value="DELETE">Delete</option>
+                        <option value="LOGIN">Login</option>
                     </select>
 
-                    <select>
-                        <option>All Users</option>
-                    </select>
-
-                    <select>
-                        <option>All Actions</option>
-                    </select>
-
-                    <select>
-                        <option>All Statuses</option>
-                    </select>
-
-                    <select>
-                        <option>Today</option>
-                    </select>
+                    <input
+                        placeholder="Entity Type"
+                        value={entityType}
+                        onChange={(e) => setEntityType(e.target.value)}
+                    />
 
                 </div>
 
@@ -127,57 +96,82 @@ function AuditLogsPage() {
                     <thead>
 
                         <tr>
-                            <th>Time</th>
-                            <th>User</th>
-                            <th>Organization</th>
+                            <th>Date</th>
+                            <th>Role</th>
+                            <th>Entity</th>
                             <th>Action</th>
-                            <th>Module</th>
-                            <th>IP Address</th>
-                            <th>Status</th>
+                            <th>Description</th>
                         </tr>
 
                     </thead>
 
                     <tbody>
 
-                        {logs.map((log, index) => (
+                        {logs.length === 0 ? (
 
-                            <tr key={index}>
+                            <tr>
 
-                                <td>{log.time}</td>
-
-                                <td>{log.user}</td>
-
-                                <td>{log.organization}</td>
-
-                                <td>{log.action}</td>
-
-                                <td>{log.module}</td>
-
-                                <td>{log.ip}</td>
-
-                                <td>
-
-                                    <span
-                                        className={`${styles.badge} ${log.status === "Success"
-                                                ? styles.success
-                                                : styles.failed
-                                            }`}
-                                    >
-                                        {log.status}
-                                    </span>
-
+                                <td
+                                    colSpan={5}
+                                    className={styles.empty}
+                                >
+                                    No audit logs found.
                                 </td>
 
                             </tr>
 
-                        ))}
+                        ) : (
+
+                            logs.map((log) => (
+
+                                <tr key={log.id}>
+
+                                    <td>
+                                        {new Date(
+                                            log.created_at
+                                        ).toLocaleString()}
+                                    </td>
+
+                                    <td>{log.actor_role}</td>
+
+                                    <td>{log.entity_type}</td>
+
+                                    <td>{log.action}</td>
+
+                                    <td>{log.description}</td>
+
+                                </tr>
+
+                            ))
+
+                        )}
 
                     </tbody>
 
                 </table>
 
+                <div className={styles.pagination}>
+
+                    <Button
+                        onClick={() => setPage((p) => Math.max(1, p - 1))}
+                    >
+                        Previous
+                    </Button>
+
+                    <span>
+                        Page {page}
+                    </span>
+
+                    <Button
+                        onClick={() => setPage((p) => p + 1)}
+                    >
+                        Next
+                    </Button>
+
+                </div>
+
             </div>
+
         </>
     );
 }
