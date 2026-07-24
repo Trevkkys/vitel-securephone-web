@@ -115,3 +115,85 @@ export async function updateBlacklistStatus(
     return response.data;
 
 }
+
+// ===============================
+// Emergency Report Requests
+// ===============================
+
+export interface EmergencyReportRequest {
+    id: number;
+    subscriber_id: number;
+    emergency_contact_name: string;
+    emergency_contact_phone: string;
+    relationship: string;
+    reason: string;
+    status: string;
+    created_at: string;
+}
+
+export interface EmergencyReportRequestDetail {
+    id: number;
+    subscriber_id: number;
+    subscriber_name: string;
+    subscriber_phone: string;
+    emergency_contact_name: string;
+    emergency_contact_phone: string;
+    relationship: string;
+    reason: string;
+    status: string;
+    created_at: string;
+}
+
+export interface EmergencyReportListResponse {
+    items: EmergencyReportRequest[];
+    total: number;
+    page: number;
+    limit: number;
+}
+
+export async function getEmergencyReportRequests(
+    page = 1,
+    limit = 25
+): Promise<EmergencyReportRequest[]> {
+    const { data } = await api.get(
+        "/admin/emergency-report-requests",
+        {
+            params: {
+                page,
+                limit,
+            },
+        }
+    );
+
+    return data;
+}
+
+export async function getEmergencyReportRequest(
+    requestId: number
+): Promise<EmergencyReportRequestDetail> {
+    const { data } = await api.get(
+        `/admin/emergency-report-requests/${requestId}`
+    );
+
+    return data;
+}
+
+export async function approveEmergencyReport(
+    requestId: number
+) {
+    const { data } = await api.patch(
+        `/admin/emergency-report-requests/${requestId}/approve`
+    );
+
+    return data;
+}
+
+export async function rejectEmergencyReport(
+    requestId: number
+) {
+    const { data } = await api.patch(
+        `/admin/emergency-report-requests/${requestId}/reject`
+    );
+
+    return data;
+}

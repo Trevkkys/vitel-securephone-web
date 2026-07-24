@@ -93,7 +93,7 @@ export interface SystemStatus {
     database_status: string;
 }
 
-export async function getSystemStatus(): Promise<SystemStatus> {
-    const { data } = await api.get("/admin/system-status");
+export async function getSystemStatus() {
+    const { data } = await api.get("/admin/system-health");
     return data;
 }
