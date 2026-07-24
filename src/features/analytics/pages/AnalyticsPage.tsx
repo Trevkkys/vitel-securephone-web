@@ -3,24 +3,44 @@ import SummaryCard from "../../../components/common/SummaryCard/SummaryCard";
 import AnalyticsLineChart from "../../../components/analytics/AnalyticsLineChart";
 import AnalyticsBarChart from "../../../components/analytics/AnalyticsBarChart";
 import AnalyticsPieChart from "../../../components/analytics/AnalyticsPieChart";
-import { getCurrentUser } from "../../../utils/auth";
 import { PortalType } from "../../../config/portals";
 import styles from "./AnalyticsPage.module.css";
 
+interface SummaryCardData {
+    title: string;
+    value: string;
+    trend: string;
+    trendType: "up" | "down";
+    subtitle: string;
+}
+
+interface LineChartData {
+    month: string;
+    value: number;
+}
+
+interface CategoryChartData {
+    name: string;
+    value: number;
+}
+
+interface AnalyticsPortalData {
+    title: string;
+    description: string;
+    cards: SummaryCardData[];
+    line: LineChartData[];
+    bar: CategoryChartData[];
+    pie: CategoryChartData[];
+}
+
 function AnalyticsPage() {
-    const user = getCurrentUser();
+    const portal = PortalType.SUPER_ADMIN;
 
-    const portal =
-        user?.organization ?? PortalType.POLICE;
-
-    const data = {
+    const analyticsData: Record<PortalType, AnalyticsPortalData> = {
 
         [PortalType.SUPER_ADMIN]: {
-
             title: "Platform Analytics",
-
-            description:
-                "Monitor platform usage across all organizations.",
+            description: "Monitor platform usage across all organizations.",
 
             cards: [
                 {
@@ -73,15 +93,11 @@ function AnalyticsPage() {
                 { name: "Insurance", value: 30 },
                 { name: "Vitel", value: 22 },
             ],
-
         },
 
         [PortalType.POLICE]: {
-
             title: "Police Analytics",
-
-            description:
-                "Operational performance across investigations.",
+            description: "Operational performance across investigations.",
 
             cards: [
                 {
@@ -134,15 +150,10 @@ function AnalyticsPage() {
                 { name: "Open", value: 25 },
                 { name: "Pending", value: 15 },
             ],
-
         },
-
         [PortalType.INSURANCE]: {
-
             title: "Insurance Analytics",
-
-            description:
-                "Claims and verification insights.",
+            description: "Claims and verification insights.",
 
             cards: [
                 {
@@ -195,15 +206,11 @@ function AnalyticsPage() {
                 { name: "Pending", value: 10 },
                 { name: "Rejected", value: 5 },
             ],
-
         },
 
         [PortalType.VITEL]: {
-
             title: "Business Analytics",
-
-            description:
-                "Customer and platform growth.",
+            description: "Customer and platform growth.",
 
             cards: [
                 {
@@ -256,11 +263,10 @@ function AnalyticsPage() {
                 { name: "Basic", value: 28 },
                 { name: "Trial", value: 8 },
             ],
-
         },
+    };
 
-    }[portal];
-
+    const data = analyticsData[portal];
     return (
         <>
             <PageHeader
@@ -275,7 +281,7 @@ function AnalyticsPage() {
                         title={card.title}
                         value={card.value}
                         trend={card.trend}
-                        trendType={card.trendType as "up" | "down"}
+                        trendType={card.trendType}
                         subtitle={card.subtitle}
                     />
                 ))}
@@ -287,7 +293,6 @@ function AnalyticsPage() {
             />
 
             <div className={styles.chartGrid}>
-
                 <AnalyticsBarChart
                     title="Performance Breakdown"
                     data={data.bar}
@@ -297,27 +302,18 @@ function AnalyticsPage() {
                     title="Distribution"
                     data={data.pie}
                 />
-
             </div>
 
             <div className={styles.insights}>
-
                 <h2>AI Insights</h2>
 
                 <ul>
-
                     <li>📈 Growth has increased steadily over the last six months.</li>
-
                     <li>⚡ Best performing category exceeded expectations this month.</li>
-
                     <li>🎯 Performance remains above the quarterly target.</li>
-
                     <li>💡 Recommendation: Continue focusing on high-performing channels.</li>
-
                 </ul>
-
             </div>
-
         </>
     );
 }
